@@ -53,76 +53,82 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 .empty-state { text-align:center; margin-top:120px; color:#888; }
 .empty-state .icon { font-size:90px; margin-bottom:24px; opacity:0.4; }
 
-/* НИЖНЯЯ НАВИГАЦИЯ — ТОЛЬКО SVG */
+/* НИЖНЯЯ НАВИГАЦИЯ — ТОЛЬКО SVG, БЕЗ ЭМОДЗИ */
 .bottom-nav {
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:64px;
-  background:#fff;
-  border-top:1px solid #eee;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:100;
-  box-shadow:0 -3px 12px rgba(0,0,0,0.08);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
 }
 
 .nav-btn {
-  background:none;
-  border:none;
-  cursor:pointer;
-  position:relative;
-  transition:all 0.2s ease;
-  padding:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:60px;
-  height:60px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
 }
 
 .nav-btn svg {
-  width:28px;
-  height:28px;
-  stroke:#999;
-  transition:stroke 0.3s, transform 0.15s;
+  width: 28px;
+  height: 28px;
+  stroke: #999;
+  transition: stroke 0.3s, transform 0.15s;
+  fill: none;
 }
 
 .nav-btn.active svg {
-  stroke:#000;
+  stroke: #000 !important;
 }
 
 .nav-btn:active svg {
-  transform:scale(1.15);
+  transform: scale(1.15);
 }
 
 /* Красный акцент для каталога и корзины */
 .nav-btn[data-page="catalog"] svg,
 .nav-btn[data-page="cart"] svg {
-  stroke:#e53935;
+  stroke: #e53935;
 }
 
 .nav-btn[data-page="catalog"].active svg,
 .nav-btn[data-page="cart"].active svg {
-  stroke:#000;
+  stroke: #000;
+}
+
+/* Скрываем любые старые span (на всякий случай) */
+.nav-btn span:not(.badge) {
+  display: none !important;
 }
 
 /* Бейджи */
 .badge {
-  position:absolute;
-  top:2px;
-  right:4px;
-  background:red;
-  color:white;
-  font-size:10px;
-  padding:2px 6px;
-  border-radius:10px;
-  min-width:16px;
-  text-align:center;
-  line-height:1;
-  font-weight:bold;
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1;
+  font-weight: bold;
 }
 
 /* Остальные стили */
