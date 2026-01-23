@@ -1,5 +1,11 @@
-const tg = Telegram.WebApp;
-tg.expand();
+let tg;
+if (window.Telegram && Telegram.WebApp) {
+  tg = Telegram.WebApp;
+  tg.expand();
+} else {
+  tg = { showPopup: (opt) => alert(opt.message), showAlert: alert };
+  document.body.innerHTML += '<p style="color:red; text-align:center;">Это Telegram Mini App — откройте в Telegram!</p>';
+}
 
 const app = document.getElementById('app');
 const modal = document.getElementById('modal');
@@ -21,16 +27,6 @@ const products = [
   {id:12, name:'Комикс', price:1290, category:'Книги', img:'https://picsum.photos/300?12', desc:'Цветной'}
 ];
 
-let tg;
-if (window.Telegram && Telegram.WebApp) {
-  tg = Telegram.WebApp;
-  tg.expand();
-} else {
-  // Fallback для браузера
-  tg = { showPopup: alert, showAlert: alert }; // Имитация методов
-  document.body.innerHTML += '<p style="color:red; text-align:center;">Это Telegram Mini App — откройте в Telegram для полной работы!</p>';
-}
-
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 function saveCart() {
@@ -43,7 +39,7 @@ function showCategories() {
   app.innerHTML = `
     <div class="grid">
       ${cats.map(c => `
-        <button onclick="showProducts('${c.replace(/'/g, "\\'")}')">${c}</button>
+        <button onclick="showProducts('$$   {c.replace(/'/g, "\\'")}')">   $${c}</button>
       `).join('')}
     </div>
   `;
@@ -59,7 +55,7 @@ function showProducts(cat) {
     <div class="grid">
       ${list.map(p => `
         <div class="card">
-          <img src="${p.img}" alt="${p.name}">
+          <img src="$$   {p.img}" alt="   $${p.name}">
           <div class="card-content">
             <h3>${p.name}</h3>
             <p>${p.desc}</p>
@@ -81,11 +77,11 @@ function addToCart(id) {
   }
   saveCart();
 
-  tg.showPopup?.({
+  tg.showPopup({
     title: 'Добавлено',
     message: 'Товар добавлен в корзину',
     buttons: [{type: 'ok'}]
-  }) || alert('Товар добавлен в корзину');
+  });
 }
 
 function changeQty(id, delta) {
@@ -117,7 +113,7 @@ cartBtn.onclick = showCart;
 
 function showCart() {
   if (cart.length === 0) {
-    tg.showAlert?.('Корзина пуста') || alert('Корзина пуста');
+    tg.showAlert('Корзина пуста');
     return;
   }
 
@@ -171,7 +167,7 @@ function checkout() {
       <input id="date" type="date" required>
       <textarea id="comment" placeholder="Комментарий к заказу (необязательно)"></textarea>
 
-      <button id="payBtn" disabled>Оплатить</button>
+      <button id="payBtn" disabled onclick="pay()">Оплатить</button>
       <button onclick="closeModal()">Отмена</button>
     </div>
   `;
@@ -185,7 +181,7 @@ function checkout() {
   };
 
   inputs.forEach(input => input.addEventListener('input', checkFields));
-  checkFields(); // начальная проверка
+  checkFields();
 }
 
 function pay() {
@@ -193,7 +189,7 @@ function pay() {
   const allFilled = Array.from(requiredInputs).every(i => i.value.trim() !== '');
 
   if (!allFilled) {
-    tg.showAlert?.('Заполните все обязательные поля') || alert('Заполните все обязательные поля');
+    tg.showAlert('Заполните все обязательные поля');
     return;
   }
 
@@ -221,13 +217,15 @@ function finish() {
   showCategories();
 }
 
-// Закрытие модалки по клику на фон (добавляем слушатель один раз)
 modal.addEventListener('click', e => {
   if (e.target === modal) {
     closeModal();
   }
 });
 
-saveCart();
-showCategories();
-
+try {
+  saveCart();
+  showCategories();
+} catch (e) {
+  tg.showAlert('Ошибка в приложении: ' + e.message);
+}
