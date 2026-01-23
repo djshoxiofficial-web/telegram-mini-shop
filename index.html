@@ -29,10 +29,18 @@
             <p class="collection">Новая коллекция</p>
           </div>
         </div>
+
         <div class="category-buttons">
-          <button class="cat-btn" data-gender="male">Мужчинам</button>
-          <button class="cat-btn" data-gender="female">Женщинам</button>
-          <button class="cat-btn all" onclick="showPage('catalog'); renderProducts('all');">Вся коллекция</button>
+          <button class="cat-btn" data-category="jeans">Джинсы</button>
+          <button class="cat-btn" data-category="tshirts">Футболки</button>
+          <button class="cat-btn" data-category="hoodies">Толстовки</button>
+          <button class="cat-btn" data-category="sneakers">Кроссовки</button>
+          <button class="cat-btn all" onclick="showPage('catalog'); renderProducts('all');">Всё</button>
+        </div>
+
+        <div class="recently-viewed">
+          <h3>Недавно просмотренные</h3>
+          <div class="product-grid small" id="recentViewed"></div>
         </div>
       </section>
 
@@ -42,8 +50,10 @@
         </div>
         <div class="tabs">
           <button class="tab active" data-tab="all">Все</button>
-          <button class="tab" data-tab="female">Женский <span id="femaleCount">0</span></button>
-          <button class="tab" data-tab="male">Мужской <span id="maleCount">0</span></button>
+          <button class="tab" data-tab="jeans">Джинсы <span id="jeansCount">0</span></button>
+          <button class="tab" data-tab="tshirts">Футболки <span id="tshirtsCount">0</span></button>
+          <button class="tab" data-tab="hoodies">Толстовки <span id="hoodiesCount">0</span></button>
+          <button class="tab" data-tab="sneakers">Кроссовки <span id="sneakersCount">0</span></button>
         </div>
         <div class="sort-filter">
           <select id="sortSelect">
@@ -57,6 +67,8 @@
         <div class="product-grid" id="products"></div>
       </section>
 
+      <!-- Остальные секции (wishlist, cart, checkout, profile, filterModal) остаются как в предыдущей версии -->
+
       <section id="wishlist" class="page">
         <div id="wishlistContent"></div>
       </section>
@@ -66,7 +78,7 @@
           <div class="empty-state">
             <div class="icon bag">🛍️</div>
             <h2>Корзина пуста</h2>
-            <p>Добавьте товары в корзину, чтобы увидеть их здесь</p>
+            <p>Добавьте товары в корзину</p>
           </div>
         </div>
         <div id="cartItems" class="product-grid"></div>
@@ -75,7 +87,7 @@
       </section>
 
       <section id="checkout" class="page">
-        <h2 style="text-align:center; margin:32px 0 16px;">Оформление заказа</h2>
+        <h2 style="text-align:center; margin:32px 0;">Оформление заказа</h2>
         <form id="checkoutForm" style="padding:0 16px; display:flex; flex-direction:column; gap:16px;">
           <input type="text" placeholder="Имя" required />
           <input type="tel" placeholder="Телефон" required />
@@ -86,7 +98,7 @@
             <option>Почта</option>
             <option>Самовывоз</option>
           </select>
-          <button type="submit" style="padding:14px; background:#000; color:white; border:none; border-radius:30px; font-weight:bold;">Подтвердить</button>
+          <button type="submit">Подтвердить заказ</button>
         </form>
       </section>
 
@@ -96,8 +108,8 @@
           <h2 id="userGreeting">Здравствуйте, Гость</h2>
         </div>
         <div style="padding:0 16px;">
-          <input type="text" id="editName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:16px; border:1px solid #ddd; border-radius:8px;" />
-          <button onclick="saveProfile()" style="padding:12px; background:#000; color:white; border:none; border-radius:8px; width:100%; font-weight:bold;">Сохранить</button>
+          <input type="text" id="editName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:16px;" />
+          <button onclick="saveProfile()" style="padding:12px; background:#000; color:white; border:none; border-radius:8px; width:100%;">Сохранить имя</button>
         </div>
         <ul class="profile-menu">
           <li>Уведомления</li>
@@ -138,10 +150,5 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
-    }
-  </script>
 </body>
 </html>
