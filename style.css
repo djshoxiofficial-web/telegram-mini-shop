@@ -475,3 +475,15 @@ body {
   background: #eee;
   color: #000;
 }
+
+.nav-btn.active {
+  transform: translateY(-4px); /* лёгкий подъём вверх */
+}
+
+.nav-btn svg {
+  transition: transform 0.3s ease, stroke 0.3s ease;
+}
+
+.nav-btn.active svg {
+  transform: scale(1.1); /* небольшое увеличение иконки */
+}
