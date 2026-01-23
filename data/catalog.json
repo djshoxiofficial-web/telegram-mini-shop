@@ -1,39 +1,26 @@
 {
-  "categories": [
-    "Джинсы",
-    "Футболки",
-    "Рубашки",
-    "Толстовки"
-  ],
+  "categories": ["Джинсы","Футболки","Рубашки","Толстовки"],
   "products": [
     {
-      "id": 1,
-      "name": "Джинсы Slim",
-      "category": "Джинсы",
-      "price": 3200,
-      "image": "assets/images/1.jpg"
+      "id":1,
+      "name":"Джинсы Slim",
+      "category":"Джинсы",
+      "price":3200,
+      "image":"assets/images/1.jpg"
     },
     {
-      "id": 2,
-      "name": "Футболка Basic",
-      "category": "Футболки",
-      "price": 1400,
-      "image": "assets/images/2.jpg"
+      "id":2,
+      "name":"Футболка Basic",
+      "category":"Футболки",
+      "price":1400,
+      "image":"assets/images/2.jpg"
     },
     {
-      "id": 3,
-      "name": "Рубашка Classic",
-      "category": "Рубашки",
-      "price": 2800,
-      "image": "assets/images/3.jpg"
-    },
-    {
-      "id": 4,
-      "name": "Толстовка Oversize",
-      "category": "Толстовки",
-      "price": 3600,
-      "image": "assets/images/4.jpg"
+      "id":3,
+      "name":"Рубашка Classic",
+      "category":"Рубашки",
+      "price":2800,
+      "image":"assets/images/3.jpg"
     }
   ]
 }
-
