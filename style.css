@@ -1,10 +1,18 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #fff;
+  color: #000;
 }
 
 /* HEADER */
@@ -12,7 +20,7 @@ body {
   position: sticky;
   top: 0;
   background: #fff;
-  padding: 14px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,9 +28,15 @@ body {
   z-index: 10;
 }
 
-.logo { font-size: 18px; font-weight: 600; }
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+}
 
-.cart-btn { cursor: pointer; }
+.cart-btn {
+  font-size: 16px;
+  cursor: pointer;
+}
 
 /* CATEGORIES */
 .categories {
@@ -30,14 +44,17 @@ body {
   gap: 10px;
   padding: 12px;
   overflow-x: auto;
+  border-bottom: 1px solid #eee;
 }
 
 .category-btn {
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid #000;
-  background: none;
-  transition: 0.25s;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .category-btn.active {
@@ -48,44 +65,69 @@ body {
 /* PRODUCTS */
 .products {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 14px;
   padding: 14px;
 }
 
 .product {
-  animation: fadeUp 0.35s ease;
+  animation: fadeUp 0.25s ease;
 }
 
 .product img {
   width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
   border-radius: 12px;
+  background: #f2f2f2;
 }
 
-.product-name { font-size: 14px; margin-top: 6px; }
-.product-price { font-size: 13px; color: #555; }
+.product-name {
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.product-price {
+  font-size: 13px;
+  color: #666;
+}
 
 .product button {
   margin-top: 6px;
+  padding: 6px;
   width: 100%;
 }
 
 /* CART */
 .cart {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   background: #fff;
   border-top: 1px solid #eee;
   padding: 16px;
   transform: translateY(100%);
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
-.cart.open { transform: translateY(0); }
+.cart.open {
+  transform: translateY(0);
+}
 
+.close-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+/* ANIMATION */
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(10px);}
-  to { opacity:1; transform:translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
