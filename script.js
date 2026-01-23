@@ -1,18 +1,24 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// Данные продуктов (можно вынести в JSON позже)
+// Данные продуктов
 const products = [
   { id:1, name:"Ботинки Yama Fur", brand:"Wrangler", price:8495, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/8B4513/fff?text=Yama+Fur" },
   { id:2, name:"Ботинки Creek Fur", brand:"Wrangler", price:8495, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/556B2F/fff?text=Creek+Fur" },
   { id:3, name:"Джинсы Slim Fit", brand:"Levi's", price:6290, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/000/fff?text=Slim+Fit" },
   { id:4, name:"Худи Oversize", brand:"Nike", price:4290, gender:"female", inStock:true, img:"https://via.placeholder.com/300x390/FF69B4/fff?text=Oversize" },
   { id:5, name:"Платье Midi", brand:"Zara", price:7990, gender:"female", inStock:true, img:"https://via.placeholder.com/300x390/FFB6C1/fff?text=Midi" },
-  // Добавь ещё 10–20 для теста скролла
+  { id:6, name:"Кроссовки Air Force", brand:"Nike", price:11990, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/FFFFFF/000?text=Air+Force" },
+  { id:7, name:"Футболка Basic", brand:"Adidas", price:2990, gender:"female", inStock:true, img:"https://via.placeholder.com/300x390/000/fff?text=Basic" },
+  { id:8, name:"Куртка Bomber", brand:"Supreme", price:15990, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/FF0000/fff?text=Bomber" },
+  { id:9, name:"Свитшот Logo", brand:"Off-White", price:8900, gender:"unisex", inStock:true, img:"https://via.placeholder.com/300x390/000000/fff?text=Logo" },
+  { id:10, name:"Шапка Beanie", brand:"The North Face", price:3490, gender:"unisex", inStock:true, img:"https://via.placeholder.com/300x390/4169E1/fff?text=Beanie" }
 ];
 
 // Состояние
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let priceFrom = 0;
+let priceTo = Infinity;
 
 // Утилиты
 function saveState() {
@@ -36,8 +42,8 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
 
   let filtered = products.filter(p => {
     if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
-    if (filterTab === 'male' && p.gender !== 'male') return false;
-    if (filterTab === 'female' && p.gender !== 'female') return false;
+    if (filterTab !== 'all' && p.gender !== filterTab) return false;
+    if (p.price < priceFrom || p.price > priceTo) return false;
     return true;
   });
 
@@ -58,13 +64,13 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
       </div>
       <div class="actions">
         <button class="heart-btn ${isInWishlist(p.id) ? 'active' : ''}" data-id="${p.id}">♡</button>
-        <button class="cart-btn" data-id="${p.id}">🛒</button>
+        <button class="cart-btn ${isInCart(p.id) ? 'active' : ''}" data-id="${p.id}">🛒</button>
       </div>
     `;
     container.appendChild(card);
   });
 
-  // Анимации карточек при скролле
+  // Scroll анимации
   gsap.utils.toArray(".product-card").forEach((card, i) => {
     gsap.from(card, {
       scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" },
@@ -72,7 +78,7 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
     });
   });
 
-  // Обработчики кнопок
+  // Обработчики
   document.querySelectorAll('.heart-btn').forEach(btn => {
     btn.onclick = () => {
       const id = +btn.dataset.id;
@@ -84,7 +90,7 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
         btn.classList.add('active');
       }
       saveState();
-      if (document.getElementById('wishlist').classList.contains('active')) renderWishlist();
+      if (document.querySelector('#wishlist').classList.contains('active')) renderWishlist();
     };
   });
 
@@ -93,17 +99,19 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
       const id = +btn.dataset.id;
       if (!isInCart(id)) {
         cart.push({ id, qty: 1 });
+        btn.classList.add('active');
         alert('Добавлено в корзину!');
       } else {
         alert('Уже в корзине');
       }
       saveState();
-      if (document.getElementById('cart').classList.contains('active')) renderCart();
+      updateBadges();
+      if (document.querySelector('#cart').classList.contains('active')) renderCart();
     };
   });
 }
 
-// Рендер избранного
+// Рендер избранного (простой вариант)
 function renderWishlist() {
   const cont = document.getElementById('wishlistContent');
   cont.innerHTML = '';
@@ -111,8 +119,8 @@ function renderWishlist() {
     cont.innerHTML = `<div class="empty-state"><div class="icon heart">♡</div><h2>Список желаний пуст</h2><p>Добавьте товары</p></div>`;
     return;
   }
-  const list = document.createElement('div');
-  list.className = 'product-grid';
+  const grid = document.createElement('div');
+  grid.className = 'product-grid';
   wishlist.forEach(id => {
     const p = products.find(pr => pr.id === id);
     if (p) {
@@ -124,12 +132,12 @@ function renderWishlist() {
           <div>${p.name}</div>
           <div class="price">${p.price.toLocaleString()} ₽</div>
         </div>
-        <button onclick="removeFromWishlist(${id})" style="margin:8px; color:red;">Удалить</button>
+        <button onclick="removeFromWishlist(${id})" style="margin:12px; color:red; width:100%; padding:8px; border:none; background:#ffebee; border-radius:8px;">Удалить</button>
       `;
-      list.appendChild(card);
+      grid.appendChild(card);
     }
   });
-  cont.appendChild(list);
+  cont.appendChild(grid);
 }
 
 function removeFromWishlist(id) {
@@ -138,54 +146,72 @@ function removeFromWishlist(id) {
   renderWishlist();
 }
 
-// Рендер корзины
+// Рендер корзины с количеством
 function renderCart() {
-  const cont = document.getElementById('cartContent');
+  const cont = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
   const btn = document.getElementById('checkoutBtn');
+  const empty = document.getElementById('cartContent').querySelector('.empty-state');
+
   cont.innerHTML = '';
+  empty.style.display = 'none';
+  cont.style.display = 'grid';
 
   if (cart.length === 0) {
-    cont.innerHTML = `<div class="empty-state"><div class="icon bag">🛍️</div><h2>Корзина пуста</h2><p>Добавьте товары</p></div>`;
+    empty.style.display = 'block';
+    cont.style.display = 'none';
     totalEl.style.display = 'none';
     btn.style.display = 'none';
     return;
   }
 
   let total = 0;
-  const list = document.createElement('div');
-  list.className = 'product-grid';
   cart.forEach(item => {
     const p = products.find(pr => pr.id === item.id);
     if (p) {
       total += p.price * item.qty;
+
       const card = document.createElement('div');
       card.className = 'product-card';
       card.innerHTML = `
         <img src="${p.img}" class="product-img">
         <div class="product-info">
           <div>${p.name}</div>
-          <div class="price">${p.price.toLocaleString()} ₽ × ${item.qty}</div>
+          <div class="price">${p.price.toLocaleString()} ₽</div>
         </div>
-        <button onclick="removeFromCart(${item.id})" style="margin:8px; color:red;">Удалить</button>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button>
+          <span class="qty">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+        </div>
+        <button onclick="removeFromCart(${item.id})" style="margin:12px; color:red; width:100%; padding:8px; border:none; background:#ffebee; border-radius:8px;">Удалить</button>
       `;
-      list.appendChild(card);
+      cont.appendChild(card);
     }
   });
-  cont.appendChild(list);
 
   totalEl.textContent = `Итого: ${total.toLocaleString()} ₽`;
   totalEl.style.display = 'block';
   btn.style.display = 'block';
 }
 
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (item) {
+    item.qty = Math.max(1, item.qty + delta);
+    saveState();
+    renderCart();
+  }
+}
+
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
   saveState();
   renderCart();
+  updateBadges();
 }
 
-// Анимация страницы
+// Анимации страниц
 function animatePageIn(pageId) {
   const page = document.getElementById(pageId);
   gsap.set(page, { x:40, opacity:0 });
@@ -240,17 +266,14 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.onclick = () => showPage(btn.dataset.page);
 });
 
-// Категории → каталог
+// Категории
 document.querySelectorAll('.cat-btn').forEach(btn => {
   if (btn.dataset.gender) {
-    btn.onclick = () => {
-      showPage('catalog');
-      // Можно фильтровать сразу по gender, но пока оставляем все
-    };
+    btn.onclick = () => showPage('catalog');
   }
 });
 
-// Tabs в каталоге
+// Tabs
 document.querySelectorAll('.tab').forEach(tab => {
   tab.onclick = () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -260,15 +283,41 @@ document.querySelectorAll('.tab').forEach(tab => {
 });
 
 // Сортировка и поиск
-document.getElementById('sortSelect').onchange = e => renderProducts(document.querySelector('.tab.active').dataset.tab, e.target.value);
-document.getElementById('searchInput').oninput = e => renderProducts(document.querySelector('.tab.active').dataset.tab, document.getElementById('sortSelect').value, e.target.value);
+document.getElementById('sortSelect').onchange = e => {
+  renderProducts(document.querySelector('.tab.active').dataset.tab, e.target.value, document.getElementById('searchInput').value);
+};
+document.getElementById('searchInput').oninput = e => {
+  renderProducts(document.querySelector('.tab.active').dataset.tab, document.getElementById('sortSelect').value, e.target.value);
+};
+
+// Фильтр модалка
+document.getElementById('filterBtn').onclick = () => {
+  document.getElementById('filterModal').classList.add('show');
+};
+
+function closeFilter() {
+  document.getElementById('filterModal').classList.remove('show');
+}
+
+function applyFilter() {
+  priceFrom = parseInt(document.getElementById('priceFrom').value) || 0;
+  priceTo = parseInt(document.getElementById('priceTo').value) || Infinity;
+  closeFilter();
+  renderProducts(
+    document.querySelector('.tab.active').dataset.tab,
+    document.getElementById('sortSelect').value,
+    document.getElementById('searchInput').value
+  );
+}
 
 // Оформление
-document.getElementById('checkoutBtn').onclick = () => showPage('checkout');
+document.getElementById('checkoutBtn').onclick = () => {
+  if (cart.length > 0) showPage('checkout');
+};
 
 document.getElementById('checkoutForm').onsubmit = e => {
   e.preventDefault();
-  alert('Заказ оформлен! Спасибо!');
+  alert('Заказ оформлен! Спасибо за покупку!');
   cart = [];
   saveState();
   showPage('cart');
@@ -280,6 +329,7 @@ function loadProfile() {
   document.getElementById('userGreeting').textContent = `Здравствуйте, ${name}`;
   document.getElementById('editName').value = name;
 }
+
 function saveProfile() {
   const name = document.getElementById('editName').value.trim();
   if (name) {
