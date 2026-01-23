@@ -4,7 +4,7 @@ if (window.Telegram && Telegram.WebApp) {
   tg.expand();
 } else {
   tg = { showPopup: (opt) => alert(opt.message), showAlert: alert };
-  document.body.innerHTML += '<p style="color:red; text-align:center;">Это Telegram Mini App — откройте в Telegram!</p>';
+  document.body.innerHTML += '<p style="color:red; text-align:center; padding:20px;">Это Telegram Mini App — откройте в Telegram для полной работы!</p>';
 }
 
 const app = document.getElementById('app');
@@ -39,7 +39,7 @@ function showCategories() {
   app.innerHTML = `
     <div class="grid">
       ${cats.map(c => `
-        <button onclick="showProducts('$$   {c.replace(/'/g, "\\'")}')">   $${c}</button>
+        <button onclick="showProducts('${c.replace(/'/g, "\\'")}')">${c}</button>
       `).join('')}
     </div>
   `;
@@ -55,7 +55,7 @@ function showProducts(cat) {
     <div class="grid">
       ${list.map(p => `
         <div class="card">
-          <img src="$$   {p.img}" alt="   $${p.name}">
+          <img src="${p.img}" alt="${p.name}">
           <div class="card-content">
             <h3>${p.name}</h3>
             <p>${p.desc}</p>
@@ -70,18 +70,15 @@ function showProducts(cat) {
 
 function addToCart(id) {
   const item = cart.find(i => i.id === id);
-  if (item) {
-    item.qty++;
-  } else {
-    cart.push({ id, qty: 1 });
-  }
+  if (item) item.qty++;
+  else cart.push({ id, qty: 1 });
   saveCart();
 
-  tg.showPopup({
+  tg.showPopup?.({
     title: 'Добавлено',
     message: 'Товар добавлен в корзину',
     buttons: [{type: 'ok'}]
-  });
+  }) || alert('Товар добавлен в корзину');
 }
 
 function changeQty(id, delta) {
@@ -113,7 +110,7 @@ cartBtn.onclick = showCart;
 
 function showCart() {
   if (cart.length === 0) {
-    tg.showAlert('Корзина пуста');
+    tg.showAlert?.('Корзина пуста') || alert('Корзина пуста');
     return;
   }
 
@@ -189,7 +186,7 @@ function pay() {
   const allFilled = Array.from(requiredInputs).every(i => i.value.trim() !== '');
 
   if (!allFilled) {
-    tg.showAlert('Заполните все обязательные поля');
+    tg.showAlert?.('Заполните все обязательные поля') || alert('Заполните все обязательные поля');
     return;
   }
 
@@ -210,6 +207,7 @@ function pay() {
 
 function closeModal() {
   modal.classList.add('hidden');
+  modal.innerHTML = ''; // очищаем, чтобы ничего не оставалось
 }
 
 function finish() {
@@ -217,15 +215,15 @@ function finish() {
   showCategories();
 }
 
+// Закрытие по клику на фон
 modal.addEventListener('click', e => {
   if (e.target === modal) {
     closeModal();
   }
 });
 
-try {
-  saveCart();
-  showCategories();
-} catch (e) {
-  tg.showAlert('Ошибка в приложении: ' + e.message);
-}
+// Явно скрываем модалку при запуске приложения
+modal.classList.add('hidden');
+
+saveCart();
+showCategories();
