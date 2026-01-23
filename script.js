@@ -1,6 +1,6 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// Данные продуктов
+// Продукты (расширил список для теста)
 const products = [
   { id:1, name:"Ботинки Yama Fur", brand:"Wrangler", price:8495, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/8B4513/fff?text=Yama+Fur" },
   { id:2, name:"Ботинки Creek Fur", brand:"Wrangler", price:8495, gender:"male", inStock:true, img:"https://via.placeholder.com/300x390/556B2F/fff?text=Creek+Fur" },
@@ -14,7 +14,6 @@ const products = [
   { id:10, name:"Шапка Beanie", brand:"The North Face", price:3490, gender:"unisex", inStock:true, img:"https://via.placeholder.com/300x390/4169E1/fff?text=Beanie" }
 ];
 
-// Состояние
 let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let priceFrom = 0;
@@ -34,6 +33,14 @@ function updateBadges() {
 
 function isInWishlist(id) { return wishlist.includes(id); }
 function isInCart(id) { return cart.some(item => item.id === id); }
+
+// Счётчики табов
+function updateTabCounts() {
+  const female = products.filter(p => p.gender === 'female').length;
+  const male = products.filter(p => p.gender === 'male').length;
+  document.getElementById('femaleCount').textContent = female;
+  document.getElementById('maleCount').textContent = male;
+}
 
 // Рендер продуктов
 function renderProducts(filterTab = 'all', sort = 'default', search = '') {
@@ -70,7 +77,6 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
     container.appendChild(card);
   });
 
-  // Scroll анимации
   gsap.utils.toArray(".product-card").forEach((card, i) => {
     gsap.from(card, {
       scrollTrigger: { trigger: card, start: "top 85%", toggleActions: "play none none reverse" },
@@ -78,7 +84,7 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
     });
   });
 
-  // Обработчики
+  // Обработчики кнопок
   document.querySelectorAll('.heart-btn').forEach(btn => {
     btn.onclick = () => {
       const id = +btn.dataset.id;
@@ -90,7 +96,7 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
         btn.classList.add('active');
       }
       saveState();
-      if (document.querySelector('#wishlist').classList.contains('active')) renderWishlist();
+      if (document.getElementById('wishlist').classList.contains('active')) renderWishlist();
     };
   });
 
@@ -106,17 +112,17 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
       }
       saveState();
       updateBadges();
-      if (document.querySelector('#cart').classList.contains('active')) renderCart();
+      if (document.getElementById('cart').classList.contains('active')) renderCart();
     };
   });
 }
 
-// Рендер избранного (простой вариант)
+// Рендер избранного
 function renderWishlist() {
   const cont = document.getElementById('wishlistContent');
   cont.innerHTML = '';
   if (wishlist.length === 0) {
-    cont.innerHTML = `<div class="empty-state"><div class="icon heart">♡</div><h2>Список желаний пуст</h2><p>Добавьте товары</p></div>`;
+    cont.innerHTML = `<div class="empty-state"><div class="icon heart">♡</div><h2>Список желаний пуст</h2><p>Добавьте товары в избранное</p></div>`;
     return;
   }
   const grid = document.createElement('div');
@@ -146,7 +152,7 @@ function removeFromWishlist(id) {
   renderWishlist();
 }
 
-// Рендер корзины с количеством
+// Рендер корзины
 function renderCart() {
   const cont = document.getElementById('cartItems');
   const totalEl = document.getElementById('cartTotal');
@@ -211,7 +217,7 @@ function removeFromCart(id) {
   updateBadges();
 }
 
-// Анимации страниц
+// Анимации
 function animatePageIn(pageId) {
   const page = document.getElementById(pageId);
   gsap.set(page, { x:40, opacity:0 });
@@ -266,14 +272,18 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.onclick = () => showPage(btn.dataset.page);
 });
 
-// Категории
-document.querySelectorAll('.cat-btn').forEach(btn => {
-  if (btn.dataset.gender) {
-    btn.onclick = () => showPage('catalog');
-  }
+// Категории на главной
+document.querySelectorAll('.cat-btn[data-gender]').forEach(btn => {
+  btn.onclick = () => {
+    const gender = btn.dataset.gender;
+    showPage('catalog');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab[data-tab="${gender}"]`).classList.add('active');
+    renderProducts(gender);
+  };
 });
 
-// Tabs
+// Tabs в каталоге
 document.querySelectorAll('.tab').forEach(tab => {
   tab.onclick = () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -317,7 +327,7 @@ document.getElementById('checkoutBtn').onclick = () => {
 
 document.getElementById('checkoutForm').onsubmit = e => {
   e.preventDefault();
-  alert('Заказ оформлен! Спасибо за покупку!');
+  alert('Заказ оформлен! Спасибо!');
   cart = [];
   saveState();
   showPage('cart');
@@ -342,4 +352,5 @@ loadProfile();
 
 // Инициализация
 updateBadges();
+updateTabCounts();
 showPage('home');
