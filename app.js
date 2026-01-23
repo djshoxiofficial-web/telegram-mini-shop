@@ -1,63 +1,76 @@
-const categoriesContainer = document.getElementById("categories");
-const productsContainer = document.getElementById("products");
+const categoriesEl = document.getElementById("categories");
+const productsEl = document.getElementById("products");
+const cartEl = document.getElementById("cart");
+const cartItemsEl = document.getElementById("cartItems");
+const cartCountEl = document.getElementById("cartCount");
 
-let catalogData = {};
+let data = {};
+let cart = [];
 let activeCategory = "Все";
 
 fetch("data/catalog.json")
-  .then(res => res.json())
-  .then(data => {
-    catalogData = data;
+  .then(r => r.json())
+  .then(json => {
+    data = json;
     renderCategories();
     renderProducts();
   });
 
 function renderCategories() {
-  categoriesContainer.innerHTML = "";
-
-  const allBtn = createCategoryButton("Все");
-  categoriesContainer.appendChild(allBtn);
-
-  catalogData.categories.forEach(cat => {
-    categoriesContainer.appendChild(createCategoryButton(cat));
+  categoriesEl.innerHTML = "";
+  ["Все", ...data.categories].forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "category-btn";
+    btn.textContent = cat;
+    if (cat === activeCategory) btn.classList.add("active");
+    btn.onclick = () => {
+      activeCategory = cat;
+      document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderProducts();
+    };
+    categoriesEl.appendChild(btn);
   });
 }
 
-function createCategoryButton(name) {
-  const btn = document.createElement("button");
-  btn.className = "category-btn";
-  btn.textContent = name;
-
-  if (name === activeCategory) btn.classList.add("active");
-
-  btn.onclick = () => {
-    activeCategory = name;
-    document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    renderProducts();
-  };
-
-  return btn;
-}
-
 function renderProducts() {
-  productsContainer.innerHTML = "";
+  productsEl.innerHTML = "";
+  const items = activeCategory === "Все"
+    ? data.products
+    : data.products.filter(p => p.category === activeCategory);
 
-  const filtered =
-    activeCategory === "Все"
-      ? catalogData.products
-      : catalogData.products.filter(p => p.category === activeCategory);
-
-  filtered.forEach(product => {
+  items.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
-
     div.innerHTML = `
-      <img src="${product.image}" />
-      <div class="product-name">${product.name}</div>
-      <div class="product-price">${product.price} ₽</div>
+      <img src="${p.image}">
+      <div class="product-name">${p.name}</div>
+      <div class="product-price">${p.price} ₽</div>
+      <button onclick='addToCart(${JSON.stringify(p)})'>В корзину</button>
     `;
+    productsEl.appendChild(div);
+  });
+}
 
-    productsContainer.appendChild(div);
+function addToCart(product) {
+  cart.push(product);
+  cartCountEl.textContent = cart.length;
+}
+
+function openCart() {
+  cartEl.classList.add("open");
+  renderCart();
+}
+
+function closeCart() {
+  cartEl.classList.remove("open");
+}
+
+function renderCart() {
+  cartItemsEl.innerHTML = "";
+  cart.forEach(item => {
+    const div = document.createElement("div");
+    div.textContent = `${item.name} — ${item.price} ₽`;
+    cartItemsEl.appendChild(div);
   });
 }
