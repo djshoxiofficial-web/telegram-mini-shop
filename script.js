@@ -260,6 +260,22 @@ function showPage(pageId) {
     checkout: 'Оформление заказа'
   }[pageId] || 'WEB SHOP';
 
+document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.page === pageId) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Если нужно — обновляем ScrollTrigger и другие вещи
+  if (pageId === 'catalog') {
+    renderProducts('all');
+    ScrollTrigger.refresh();
+  }
+  if (pageId === 'wishlist') renderWishlist();
+  if (pageId === 'cart') renderCart();
+}
+  
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.querySelector(`.nav-btn[data-page="${pageId}"]`)?.classList.add('active');
 
@@ -355,3 +371,4 @@ loadProfile();
 updateBadges();
 updateTabCounts();
 showPage('home');
+
