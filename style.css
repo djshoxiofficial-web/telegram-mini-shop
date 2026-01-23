@@ -53,7 +53,7 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 .empty-state { text-align:center; margin-top:120px; color:#888; }
 .empty-state .icon { font-size:90px; margin-bottom:24px; opacity:0.4; }
 
-/* НИЖНЯЯ НАВИГАЦИЯ — ТОЛЬКО SVG, БЕЗ ЭМОДЗИ */
+/* НИЖНЯЯ НАВИГАЦИЯ — ТОЛЬКО SVG */
 .bottom-nav {
   position:fixed;
   bottom:0;
@@ -79,8 +79,8 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
   display:flex;
   align-items:center;
   justify-content:center;
-  width: 64px;
-  height: 64px;
+  width:60px;
+  height:60px;
 }
 
 .nav-btn svg {
@@ -112,20 +112,20 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 /* Бейджи */
 .badge {
   position:absolute;
-  top:4px;
-  right:8px;
+  top:2px;
+  right:4px;
   background:red;
   color:white;
   font-size:10px;
   padding:2px 6px;
-  border-radius:12px;
+  border-radius:10px;
   min-width:16px;
   text-align:center;
   line-height:1;
   font-weight:bold;
 }
 
-/* Остальные стили (профиль, модалка и т.д.) */
+/* Остальные стили */
 .profile-header { text-align:center; padding:32px 0; }
 .avatar { width:80px; height:80px; background:#eee; border-radius:50%; margin:0 auto 12px; font-size:48px; display:flex; align-items:center; justify-content:center; }
 .profile-menu { list-style:none; padding:16px; }
