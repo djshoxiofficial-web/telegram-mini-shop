@@ -25,83 +25,185 @@ let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 function saveCart() {
   localStorage.setItem('cart', JSON.stringify(cart));
-  cartCount.textContent = cart.reduce((s,i)=>s+i.qty,0);
+  cartCount.textContent = cart.reduce((sum, i) => sum + i.qty, 0);
 }
 
 function showCategories() {
-  const cats = [...new Set(products.map(p=>p.category))];
+  const cats = [...new Set(products.map(p => p.category))];
   app.innerHTML = `
     <div class="grid">
-      ${cats.map(c=>`
-        <button onclick="showProducts('${c}')">${c}</button>
+      ${cats.map(c => `
+        <button onclick="showProducts('${c.replace(/'/g, "\\'")}')">${c}</button>
       `).join('')}
-    </div>`;
+    </div>
+  `;
 }
 
 function showProducts(cat) {
-  const list = products.filter(p=>p.category===cat);
+  const list = products.filter(p => p.category === cat);
+
   app.innerHTML = `
+    <div style="padding:16px;">
+      <button onclick="showCategories()">← Назад к категориям</button>
+    </div>
     <div class="grid">
-      ${list.map(p=>`
+      ${list.map(p => `
         <div class="card">
-          <img src="${p.img}">
+          <img src="${p.img}" alt="${p.name}">
           <div class="card-content">
             <h3>${p.name}</h3>
             <p>${p.desc}</p>
-            <div class="price">${p.price} ₽</div>
+            <div class="price">${p.price.toLocaleString('ru-RU')} ₽</div>
             <button onclick="addToCart(${p.id})">В корзину</button>
           </div>
         </div>
       `).join('')}
-    </div>`;
+    </div>
+  `;
 }
 
 function addToCart(id) {
-  const item = cart.find(i=>i.id===id);
-  if(item) item.qty++;
-  else cart.push({id, qty:1});
+  const item = cart.find(i => i.id === id);
+  if (item) {
+    item.qty++;
+  } else {
+    cart.push({ id, qty: 1 });
+  }
   saveCart();
+
+  tg.showPopup?.({
+    title: 'Добавлено',
+    message: 'Товар добавлен в корзину',
+    buttons: [{type: 'ok'}]
+  }) || alert('Товар добавлен в корзину');
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+
+  item.qty += delta;
+  if (item.qty < 1) {
+    removeFromCart(id);
+    return;
+  }
+
+  saveCart();
+  showCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  saveCart();
+
+  if (cart.length === 0) {
+    closeModal();
+  } else {
+    showCart();
+  }
 }
 
 cartBtn.onclick = showCart;
 
 function showCart() {
-  if(cart.length===0) return alert('Корзина пуста');
+  if (cart.length === 0) {
+    tg.showAlert?.('Корзина пуста') || alert('Корзина пуста');
+    return;
+  }
+
   modal.classList.remove('hidden');
+
+  let total = 0;
+
+  const itemsHtml = cart.map(item => {
+    const p = products.find(pr => pr.id === item.id);
+    const sum = p.price * item.qty;
+    total += sum;
+
+    return `
+      <div class="cart-item">
+        <div>
+          <strong>${p.name}</strong><br>
+          ${p.price.toLocaleString('ru-RU')} ₽
+        </div>
+        <div class="cart-controls">
+          <button onclick="changeQty(${item.id}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty(${item.id}, 1)">+</button>
+          <button onclick="removeFromCart(${item.id})">✕</button>
+        </div>
+        <div><strong>${sum.toLocaleString('ru-RU')} ₽</strong></div>
+      </div>
+    `;
+  }).join('');
+
   modal.innerHTML = `
     <div class="modal-content">
       <h2>Корзина</h2>
-      ${cart.map(i=>{
-        const p = products.find(x=>x.id===i.id);
-        return `<p>${p.name} × ${i.qty} — ${p.price*i.qty} ₽</p>`;
-      }).join('')}
+      ${itemsHtml}
+      <hr>
+      <p style="font-size:1.1rem; text-align:right;"><strong>Итого: ${total.toLocaleString('ru-RU')} ₽</strong></p>
       <button onclick="checkout()">Оформить заказ</button>
       <button onclick="closeModal()">Закрыть</button>
-    </div>`;
+    </div>
+  `;
 }
 
 function checkout() {
   modal.innerHTML = `
     <div class="modal-content">
-      <h2>Доставка</h2>
-      <input placeholder="Имя">
-      <input placeholder="Телефон">
-      <input placeholder="Город">
-      <input placeholder="Адрес">
-      <input placeholder="Дата / время">
-      <button onclick="pay()">Оплатить</button>
-    </div>`;
+      <h2>Оформление заказа</h2>
+
+      <input id="name" placeholder="Имя" required>
+      <input id="phone" placeholder="Телефон" type="tel" required>
+      <input id="city" placeholder="Город" required>
+      <input id="address" placeholder="Адрес" required>
+      <input id="date" type="date" required>
+      <textarea id="comment" placeholder="Комментарий к заказу (необязательно)"></textarea>
+
+      <button id="payBtn" disabled>Оплатить</button>
+      <button onclick="closeModal()">Отмена</button>
+    </div>
+  `;
+
+  const inputs = modal.querySelectorAll('input[required], textarea');
+  const payBtn = modal.querySelector('#payBtn');
+
+  const checkFields = () => {
+    const allFilled = Array.from(inputs).every(i => i.value.trim() !== '');
+    payBtn.disabled = !allFilled;
+  };
+
+  inputs.forEach(input => input.addEventListener('input', checkFields));
+  checkFields(); // начальная проверка
 }
 
 function pay() {
+  const requiredInputs = modal.querySelectorAll('input[required]');
+  const allFilled = Array.from(requiredInputs).every(i => i.value.trim() !== '');
+
+  if (!allFilled) {
+    tg.showAlert?.('Заполните все обязательные поля') || alert('Заполните все обязательные поля');
+    return;
+  }
+
+  const orderId = Math.floor(Math.random() * 900000) + 100000;
+
   modal.innerHTML = `
-    <div class="modal-content">
-      <h2>✅ Спасибо за заказ!</h2>
-      <p>Номер заказа: #${Math.floor(Math.random()*100000)}</p>
-      <button onclick="finish()">Закрыть</button>
-    </div>`;
+    <div class="modal-content" style="text-align:center;">
+      <h2>✅ Заказ оформлен!</h2>
+      <p>Номер заказа: <strong>#${orderId}</strong></p>
+      <p>Мы свяжемся с вами в ближайшее время</p>
+      <button onclick="finish()">Готово</button>
+    </div>
+  `;
+
   cart = [];
   saveCart();
+}
+
+function closeModal() {
+  modal.classList.add('hidden');
 }
 
 function finish() {
@@ -109,9 +211,12 @@ function finish() {
   showCategories();
 }
 
-function closeModal() {
-  modal.classList.add('hidden');
-}
+// Закрытие модалки по клику на фон (добавляем слушатель один раз)
+modal.addEventListener('click', e => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
 
 saveCart();
 showCategories();
