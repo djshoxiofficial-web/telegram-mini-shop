@@ -2,32 +2,119 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>WEB SHOP</title>
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-  <!-- TELEGRAM SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="style.css" />
+  <!-- Для плавной прокрутки и PWA-feel -->
+  <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="/manifest.json" /> <!-- если захочешь PWA -->
 </head>
 <body>
 
-<header class="header">
-  <div class="logo">WEB SHOP</div>
-  <div class="cart-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
-</header>
+  <!-- Основной контейнер для "страниц" -->
+  <div class="app">
 
-<nav class="categories" id="categories"></nav>
-<main class="products" id="products"></main>
+    <!-- Header / Top bar (на всех страницах) -->
+    <header class="top-bar">
+      <div class="back-arrow" onclick="goBack()">←</div>
+      <div class="page-title">WEB SHOP</div>
+      <div class="plus">+</div>
+    </header>
 
-<div class="cart" id="cart">
-  <h3>Корзина</h3>
-  <div id="cartItems"></div>
-  <button class="close-btn" onclick="closeCart()">Закрыть</button>
-</div>
+    <!-- Контент будет меняться здесь -->
+    <main id="page-content">
 
-<script src="/app.js"></script>
+      <!-- Главная (hero) -->
+      <section id="home" class="page active">
+        <!-- Большое фото / hero -->
+        <div class="hero">
+          <img src="https://via.placeholder.com/500x700/111/eee?text=WEB+SHOP+Коллекция" alt="Коллекция" class="hero-img" />
+          <div class="hero-overlay">
+            <h1 class="brand">WEB<sup>SHOP</sup></h1>
+            <p class="collection">Новая коллекция</p>
+          </div>
+        </div>
+
+        <!-- Кнопки категорий -->
+        <div class="category-buttons">
+          <button class="cat-btn">Мужчинам</button>
+          <button class="cat-btn">Женщинам</button>
+        </div>
+      </section>
+
+      <!-- Каталог (при клике на категорию) -->
+      <section id="catalog" class="page">
+        <div class="tabs">
+          <button class="tab active">Женский <span>239</span></button>
+          <button class="tab">Мужской <span>343</span></button>
+        </div>
+
+        <div class="sort-filter">
+          <button>По умолчанию</button>
+          <button>Фильтр</button>
+        </div>
+
+        <div class="product-grid" id="products">
+          <!-- Карточки товаров добавим в JS -->
+        </div>
+      </section>
+
+      <!-- Пустые состояния (примеры) -->
+      <section id="wishlist" class="page">
+        <div class="empty-state">
+          <div class="icon heart">♡</div>
+          <h2>Список желаний пуст</h2>
+          <p>Добавьте товары в избранное, чтобы они появились здесь</p>
+        </div>
+      </section>
+
+      <section id="cart" class="page">
+        <div class="empty-state">
+          <div class="icon bag">🛍️</div>
+          <h2>Корзина пуста</h2>
+          <p>Добавьте товары в корзину, чтобы увидеть их здесь</p>
+        </div>
+      </section>
+
+      <section id="profile" class="page">
+        <div class="profile-header">
+          <div class="avatar">👤</div>
+          <h2>Здравствуйте, SH</h2>
+        </div>
+        <ul class="profile-menu">
+          <li>Редактировать профиль</li>
+          <li>Уведомления</li>
+          <li>Доступно: 0 баллов</li>
+          <li>Мои заказы</li>
+          <li>Мои варианты доставки</li>
+          <li>Мои отзывы</li>
+          <li>Выход</li>
+        </ul>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-page="home">
+        <span>🏠</span>
+      </button>
+      <button class="nav-btn" data-page="wishlist">
+        <span>♡</span>
+      </button>
+      <button class="nav-btn" data-page="catalog">
+        <span class="shop-icon">🛒</span>
+      </button>
+      <button class="nav-btn" data-page="cart">
+        <span>🛍️</span>
+      </button>
+      <button class="nav-btn" data-page="profile">
+        <span>👤</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
