@@ -54,81 +54,37 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 .empty-state .icon { font-size:90px; margin-bottom:24px; opacity:0.4; }
 
 /* НИЖНЯЯ НАВИГАЦИЯ — ТОЛЬКО SVG, БЕЗ ЭМОДЗИ */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: #fff;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 100;
-  box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
-}
-
-.nav-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-}
-
-.nav-btn svg {
-  width: 28px;
-  height: 28px;
-  stroke: #999;
-  transition: stroke 0.3s, transform 0.15s;
-  fill: none;
-}
-
-.nav-btn.active svg {
-  stroke: #000 !important;
-}
-
-.nav-btn:active svg {
-  transform: scale(1.15);
-}
-
-/* Красный акцент для каталога и корзины */
-.nav-btn[data-page="catalog"] svg,
-.nav-btn[data-page="cart"] svg {
-  stroke: #e53935;
-}
-
-.nav-btn[data-page="catalog"].active svg,
-.nav-btn[data-page="cart"].active svg {
-  stroke: #000;
-}
-
-/* Скрываем любые старые span (на всякий случай) */
-.nav-btn span:not(.badge) {
+/* УБЕДИМСЯ, ЧТО НИКАКИЕ СТАРЫЕ SPAN НЕ ПОКАЗЫВАЮТСЯ */
+.bottom-nav .nav-btn span:not(.badge) {
   display: none !important;
 }
 
-/* Бейджи */
-.badge {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 16px;
-  text-align: center;
-  line-height: 1;
-  font-weight: bold;
+/* SVG стили — делаем их видимыми и красивыми */
+.bottom-nav .nav-btn svg {
+  width: 28px !important;
+  height: 28px !important;
+  stroke: #999 !important;
+  fill: none !important;
+  transition: stroke 0.3s ease, transform 0.15s ease;
+}
+
+.bottom-nav .nav-btn.active svg {
+  stroke: #000 !important;
+}
+
+.bottom-nav .nav-btn:active svg {
+  transform: scale(1.15) !important;
+}
+
+/* Красный для каталога и корзины */
+.bottom-nav .nav-btn[data-page="catalog"] svg,
+.bottom-nav .nav-btn[data-page="cart"] svg {
+  stroke: #e53935 !important;
+}
+
+.bottom-nav .nav-btn[data-page="catalog"].active svg,
+.bottom-nav .nav-btn[data-page="cart"].active svg {
+  stroke: #000 !important;
 }
 
 /* Остальные стили */
@@ -147,3 +103,4 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 .modal-buttons button { padding:12px; border:none; border-radius:8px; font-size:16px; cursor:pointer; }
 .modal-buttons button:first-child { background:#000; color:white; }
 .modal-buttons button:last-child { background:#eee; color:#000; }
+
