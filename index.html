@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <title>WEB SHOP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
 
 <header class="header">
   <h1 class="logo">WEB SHOP</h1>
+  <div class="cart-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 </header>
 
 <nav class="categories" id="categories"></nav>
 
 <main class="products" id="products"></main>
+
+<!-- CART -->
+<div class="cart" id="cart">
+  <h3>Корзина</h3>
+  <div id="cartItems"></div>
+  <button onclick="closeCart()">Закрыть</button>
+</div>
 
 <script src="app.js"></script>
 </body>
