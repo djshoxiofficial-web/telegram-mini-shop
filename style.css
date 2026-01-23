@@ -104,6 +104,11 @@ button:disabled {
   align-items: center;
   justify-content: center;
   z-index: 200;
+  pointer-events: none;           /* не ловит клики когда скрыта */
+}
+
+.modal:not(.hidden) {
+  pointer-events: auto;           /* ловит клики только когда видна */
 }
 
 .modal-content {
@@ -115,6 +120,11 @@ button:disabled {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  pointer-events: auto;           /* контент всегда кликабелен */
+}
+
+.hidden {
+  display: none !important;
 }
 
 input, textarea {
