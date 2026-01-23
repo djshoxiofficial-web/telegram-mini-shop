@@ -21,6 +21,16 @@ const products = [
   {id:12, name:'Комикс', price:1290, category:'Книги', img:'https://picsum.photos/300?12', desc:'Цветной'}
 ];
 
+let tg;
+if (window.Telegram && Telegram.WebApp) {
+  tg = Telegram.WebApp;
+  tg.expand();
+} else {
+  // Fallback для браузера
+  tg = { showPopup: alert, showAlert: alert }; // Имитация методов
+  document.body.innerHTML += '<p style="color:red; text-align:center;">Это Telegram Mini App — откройте в Telegram для полной работы!</p>';
+}
+
 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 function saveCart() {
@@ -166,7 +176,7 @@ function checkout() {
     </div>
   `;
 
-  const inputs = modal.querySelectorAll('input[required], textarea');
+  const inputs = modal.querySelectorAll('input[required]');
   const payBtn = modal.querySelector('#payBtn');
 
   const checkFields = () => {
@@ -220,3 +230,4 @@ modal.addEventListener('click', e => {
 
 saveCart();
 showCategories();
+
