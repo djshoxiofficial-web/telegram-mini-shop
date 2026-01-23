@@ -71,7 +71,7 @@ function renderProducts(filterTab = 'all', sort = 'default', search = '') {
       </div>
       <div class="actions">
         <button class="heart-btn ${isInWishlist(p.id) ? 'active' : ''}" data-id="${p.id}">♡</button>
-        <button class="cart-btn ${isInCart(p.id) ? 'active' : ''}" data-id="${p.id}">🛒</button>
+        <button class="cart-btn ${isInCart(p.id) ? 'active' : ''}" data-id="${p.id}"></button>
       </div>
     `;
     container.appendChild(card);
@@ -371,4 +371,5 @@ loadProfile();
 updateBadges();
 updateTabCounts();
 showPage('home');
+
 
