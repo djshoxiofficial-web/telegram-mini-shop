@@ -1,5 +1,5 @@
-// GSAP анимации
-gsap.registerPlugin(); // если добавишь плагины позже, регистрируй здесь
+// GSAP + ScrollTrigger
+gsap.registerPlugin(ScrollTrigger);
 
 // Функция анимации появления страницы
 function animatePageIn(pageId) {
@@ -8,7 +8,7 @@ function animatePageIn(pageId) {
   // Сбрасываем начальное состояние
   gsap.set(page, { x: 50, opacity: 0 });
 
-  // Анимируем вход
+  // Анимируем вход страницы
   gsap.to(page, {
     duration: 0.6,
     x: 0,
@@ -33,13 +33,22 @@ function animatePageIn(pageId) {
 
   if (pageId === 'catalog') {
     gsap.from(".tab", { duration: 0.6, y: -20, opacity: 0, stagger: 0.1, ease: "power2.out" });
-    gsap.from(".product-card", { 
-      duration: 0.8, 
-      y: 60, 
-      opacity: 0, 
-      stagger: 0.08, 
-      ease: "power3.out", 
-      delay: 0.3 
+    
+    // ScrollTrigger для карточек — fade-in + slide-up при скролле
+    gsap.utils.toArray(".product-card").forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 85%",          // начинается когда верх карточки на 85% высоты экрана
+          toggleActions: "play none none reverse", // play при входе, reverse при выходе вверх
+          // markers: true,          // раскомменти для отладки (показывает маркеры)
+        },
+        y: 60,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        delay: i * 0.08           // лёгкий stagger по индексу
+      });
     });
   }
 
@@ -85,7 +94,7 @@ function showPage(pageId) {
     }
   });
 
-  // Заголовок
+  // Обновляем заголовок
   const title = document.querySelector('.page-title');
   if (pageId === 'home') title.textContent = 'WEB SHOP';
   if (pageId === 'catalog') title.textContent = 'Каталог';
@@ -93,24 +102,29 @@ function showPage(pageId) {
   if (pageId === 'cart') title.textContent = 'Оформление заказа';
   if (pageId === 'profile') title.textContent = 'Кабинет';
 
-  // Active в bottom nav
+  // Active в bottom nav + анимация
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-  document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+  const activeBtn = document.querySelector(`[data-page="${pageId}"]`);
+  activeBtn.classList.add('active');
 
-  // Анимация active кнопки в навбаре
-  gsap.to(`[data-page="${pageId}"]`, { 
+  gsap.to(activeBtn, { 
     duration: 0.4, 
     scale: 1.15, 
     y: -8, 
     ease: "back.out(1.7)" 
   });
-  gsap.to(`[data-page="${pageId}"]`, { 
+  gsap.to(activeBtn, { 
     duration: 0.6, 
     scale: 1, 
     y: 0, 
     delay: 0.4, 
     ease: "power2.out" 
   });
+
+  // Важно: обновляем ScrollTrigger после смены страницы (особенно для каталога)
+  if (pageId === 'catalog') {
+    ScrollTrigger.refresh();
+  }
 }
 
 // Клик по bottom nav
@@ -126,12 +140,14 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   btn.addEventListener('click', () => showPage('catalog'));
 });
 
-// Продукты (с анимацией stagger)
+// Продукты (пример)
 const productsContainer = document.getElementById('products');
 const sampleProducts = [
   { name: 'Ботинки Yama Fur', brand: 'Wrangler', price: '8 495₽', inStock: true, img: 'https://via.placeholder.com/300x360/8B4513/fff?text=Yama+Fur' },
   { name: 'Ботинки Высокие Creek Fur', brand: 'Wrangler', price: '8 495₽', inStock: true, img: 'https://via.placeholder.com/300x360/556B2F/fff?text=Creek+Fur' },
-  // добавь ещё...
+  { name: 'Кеды Classic', brand: 'Vans', price: '5 990₽', inStock: true, img: 'https://via.placeholder.com/300x360/000/fff?text=Classic' },
+  { name: 'Худи Oversize', brand: 'Nike', price: '4 290₽', inStock: true, img: 'https://via.placeholder.com/300x360/FF0000/fff?text=Oversize' },
+  // Добавь сколько угодно — анимация stagger будет работать автоматически
 ];
 
 function renderProducts() {
@@ -151,6 +167,9 @@ function renderProducts() {
     `;
     productsContainer.appendChild(card);
   });
+
+  // После рендера продуктов — обновляем ScrollTrigger (чтобы новые карточки тоже анимировались)
+  ScrollTrigger.refresh(true);
 }
 
 renderProducts();
@@ -160,5 +179,5 @@ function goBack() {
   showPage('home');
 }
 
-// Инициализация — первая анимация главной
+// Инициализация
 showPage('home');
