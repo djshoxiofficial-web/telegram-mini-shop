@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Telegram Mini Shop</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>WEB SHOP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>🛍 Магазин</h1>
-    <button id="cartBtn">🛒 Корзина (<span id="cartCount">0</span>)</button>
-  </header>
 
-  <main id="app"></main>
+<header class="header">
+  <h1 class="logo">WEB SHOP</h1>
+</header>
 
-  <div id="modal" class="modal hidden"></div>
+<nav class="categories" id="categories"></nav>
 
-  <script src="script.js"></script>
+<main class="products" id="products"></main>
+
+<script src="app.js"></script>
 </body>
 </html>
