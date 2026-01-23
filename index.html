@@ -6,7 +6,6 @@
   <title>WEB SHOP</title>
   <link rel="stylesheet" href="style.css" />
   <meta name="theme-color" content="#000000" />
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
 </head>
@@ -22,7 +21,6 @@
 
     <main id="page-content">
 
-      <!-- Главная -->
       <section id="home" class="page active">
         <div class="hero">
           <img src="https://via.placeholder.com/500x700/111/eee?text=WEB+SHOP+Коллекция" alt="Коллекция" class="hero-img" />
@@ -34,19 +32,18 @@
         <div class="category-buttons">
           <button class="cat-btn" data-gender="male">Мужчинам</button>
           <button class="cat-btn" data-gender="female">Женщинам</button>
-          <button class="cat-btn all" onclick="showPage('catalog')">Вся коллекция</button>
+          <button class="cat-btn all" onclick="showPage('catalog'); renderProducts('all');">Вся коллекция</button>
         </div>
       </section>
 
-      <!-- Каталог -->
       <section id="catalog" class="page">
         <div class="search-bar">
           <input type="text" id="searchInput" placeholder="Поиск по названию..." />
         </div>
         <div class="tabs">
           <button class="tab active" data-tab="all">Все</button>
-          <button class="tab" data-tab="female">Женский <span>239</span></button>
-          <button class="tab" data-tab="male">Мужской <span>343</span></button>
+          <button class="tab" data-tab="female">Женский <span id="femaleCount">0</span></button>
+          <button class="tab" data-tab="male">Мужской <span id="maleCount">0</span></button>
         </div>
         <div class="sort-filter">
           <select id="sortSelect">
@@ -60,18 +57,10 @@
         <div class="product-grid" id="products"></div>
       </section>
 
-      <!-- Избранное -->
       <section id="wishlist" class="page">
-        <div id="wishlistContent">
-          <div class="empty-state">
-            <div class="icon heart">♡</div>
-            <h2>Список желаний пуст</h2>
-            <p>Добавьте товары в избранное</p>
-          </div>
-        </div>
+        <div id="wishlistContent"></div>
       </section>
 
-      <!-- Корзина -->
       <section id="cart" class="page">
         <div id="cartContent">
           <div class="empty-state">
@@ -80,12 +69,11 @@
             <p>Добавьте товары в корзину</p>
           </div>
         </div>
-        <div id="cartItems" class="product-grid" style="display:none;"></div>
+        <div id="cartItems" class="product-grid"></div>
         <div id="cartTotal" style="display:none; padding:16px; font-weight:bold; text-align:right; font-size:18px;"></div>
-        <button id="checkoutBtn" style="display:none; margin:16px; padding:14px; background:#000; color:white; border:none; border-radius:30px; width:calc(100% - 32px); font-size:16px; font-weight:bold;">Оформить заказ</button>
+        <button id="checkoutBtn" style="display:none; margin:16px; padding:14px; background:#000; color:white; border:none; border-radius:30px; width:calc(100% - 32px);">Оформить заказ</button>
       </section>
 
-      <!-- Оформление заказа -->
       <section id="checkout" class="page">
         <h2 style="text-align:center; margin:32px 0;">Оформление заказа</h2>
         <form id="checkoutForm" style="padding:0 16px; display:flex; flex-direction:column; gap:16px;">
@@ -98,11 +86,10 @@
             <option>Почта</option>
             <option>Самовывоз</option>
           </select>
-          <button type="submit" style="padding:14px; background:#000; color:white; border:none; border-radius:30px;">Подтвердить заказ</button>
+          <button type="submit">Подтвердить заказ</button>
         </form>
       </section>
 
-      <!-- Профиль -->
       <section id="profile" class="page">
         <div class="profile-header">
           <div class="avatar">👤</div>
@@ -110,7 +97,7 @@
         </div>
         <div style="padding:0 16px;">
           <input type="text" id="editName" placeholder="Ваше имя" style="width:100%; padding:12px; margin-bottom:16px;" />
-          <button onclick="saveProfile()" style="padding:12px; background:#000; color:white; border:none; border-radius:8px; width:100%;">Сохранить имя</button>
+          <button onclick="saveProfile()" style="padding:12px; background:#000; color:white; border:none; border-radius:8px; width:100%;">Сохранить</button>
         </div>
         <ul class="profile-menu">
           <li>Уведомления</li>
@@ -152,7 +139,6 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script>
   <script src="script.js"></script>
-  <!-- PWA Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js');
