@@ -1,34 +1,3 @@
-/* Добавляем к предыдущему стилю */
-
-.recently-viewed {
-  margin: 32px 16px 80px;
-}
-.recently-viewed h3 {
-  font-size: 18px;
-  margin-bottom: 16px;
-  color: #333;
-}
-.product-grid.small {
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
-}
-.product-card.small {
-  font-size: 13px;
-}
-.product-card.small .product-img {
-  aspect-ratio: 1/1.2;
-}
-.rating {
-  color: #ffd700;
-  font-size: 14px;
-  margin-top: 4px;
-}
-.discount {
-  color: #e53935;
-  font-size: 13px;
-  margin-top: 4px;
-  font-weight: bold;
-}
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; color:#000; height:100vh; overflow:hidden; }
 .app { display:flex; flex-direction:column; height:100vh; }
@@ -132,4 +101,3 @@ body { font-family:system-ui, -apple-system, sans-serif; background:#f8f8f8; col
 }
 .modal-buttons button:first-child { background: #000; color: white; }
 .modal-buttons button:last-child { background: #eee; color: #000; }
-
