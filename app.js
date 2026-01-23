@@ -4,11 +4,11 @@ const cartEl = document.getElementById("cart");
 const cartItemsEl = document.getElementById("cartItems");
 const cartCountEl = document.getElementById("cartCount");
 
-let data = {};
+let data;
 let cart = [];
 let activeCategory = "Все";
 
-fetch("data/catalog.json")
+fetch("/data/catalog.json")
   .then(r => r.json())
   .then(json => {
     data = json;
@@ -23,12 +23,14 @@ function renderCategories() {
     btn.className = "category-btn";
     btn.textContent = cat;
     if (cat === activeCategory) btn.classList.add("active");
+
     btn.onclick = () => {
       activeCategory = cat;
       document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       renderProducts();
     };
+
     categoriesEl.appendChild(btn);
   });
 }
@@ -42,12 +44,18 @@ function renderProducts() {
   items.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
+
+    const btn = document.createElement("button");
+    btn.textContent = "В корзину";
+    btn.onclick = () => addToCart(p);
+
     div.innerHTML = `
       <img src="${p.image}">
       <div class="product-name">${p.name}</div>
       <div class="product-price">${p.price} ₽</div>
-      <button onclick='addToCart(${JSON.stringify(p)})'>В корзину</button>
     `;
+    div.appendChild(btn);
+
     productsEl.appendChild(div);
   });
 }
