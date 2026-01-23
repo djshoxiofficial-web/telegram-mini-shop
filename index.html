@@ -5,28 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>WEB SHOP</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Для плавной прокрутки и PWA-feel -->
   <meta name="theme-color" content="#000000" />
-  <link rel="manifest" href="/manifest.json" /> <!-- если захочешь PWA -->
 </head>
 <body>
 
-  <!-- Основной контейнер для "страниц" -->
   <div class="app">
 
-    <!-- Header / Top bar (на всех страницах) -->
     <header class="top-bar">
       <div class="back-arrow" onclick="goBack()">←</div>
       <div class="page-title">WEB SHOP</div>
       <div class="plus">+</div>
     </header>
 
-    <!-- Контент будет меняться здесь -->
     <main id="page-content">
 
-      <!-- Главная (hero) -->
       <section id="home" class="page active">
-        <!-- Большое фото / hero -->
         <div class="hero">
           <img src="https://via.placeholder.com/500x700/111/eee?text=WEB+SHOP+Коллекция" alt="Коллекция" class="hero-img" />
           <div class="hero-overlay">
@@ -35,14 +28,12 @@
           </div>
         </div>
 
-        <!-- Кнопки категорий -->
         <div class="category-buttons">
           <button class="cat-btn">Мужчинам</button>
           <button class="cat-btn">Женщинам</button>
         </div>
       </section>
 
-      <!-- Каталог (при клике на категорию) -->
       <section id="catalog" class="page">
         <div class="tabs">
           <button class="tab active">Женский <span>239</span></button>
@@ -54,12 +45,9 @@
           <button>Фильтр</button>
         </div>
 
-        <div class="product-grid" id="products">
-          <!-- Карточки товаров добавим в JS -->
-        </div>
+        <div class="product-grid" id="products"></div>
       </section>
 
-      <!-- Пустые состояния (примеры) -->
       <section id="wishlist" class="page">
         <div class="empty-state">
           <div class="icon heart">♡</div>
@@ -94,26 +82,19 @@
 
     </main>
 
-    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-      <button class="nav-btn active" data-page="home">
-        <span>🏠</span>
-      </button>
-      <button class="nav-btn" data-page="wishlist">
-        <span>♡</span>
-      </button>
-      <button class="nav-btn" data-page="catalog">
-        <span class="shop-icon">🛒</span>
-      </button>
-      <button class="nav-btn" data-page="cart">
-        <span>🛍️</span>
-      </button>
-      <button class="nav-btn" data-page="profile">
-        <span>👤</span>
-      </button>
+      <button class="nav-btn active" data-page="home"><span>🏠</span></button>
+      <button class="nav-btn" data-page="wishlist"><span>♡</span></button>
+      <button class="nav-btn" data-page="catalog"><span class="shop-icon">🛒</span></button>
+      <button class="nav-btn" data-page="cart"><span>🛍️</span></button>
+      <button class="nav-btn" data-page="profile"><span>👤</span></button>
     </nav>
 
   </div>
+
+  <!-- GSAP Core + ScrollTrigger (если захочешь анимации по скроллу позже) -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14/dist/gsap.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/gsap@3.14/dist/ScrollTrigger.min.js"></script> --> <!-- раскомменти если нужен -->
 
   <script src="script.js"></script>
 </body>
