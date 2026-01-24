@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WEB SHOP</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div id="app">
@@ -45,13 +44,6 @@
         <div id="cart" class="screen">
             <div class="screen-header">Корзина</div>
             <div class="products-grid cart-grid"></div>
-            <div class="cart-total hidden">
-                <div class="total-line">
-                    <span>Итого:</span>
-                    <span id="cart-sum">0 ₽</span>
-                </div>
-                <button id="send-order-btn" class="send-order">Отправить заказ в Telegram</button>
-            </div>
             <div class="empty empty-cart hidden">
                 <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ddd" stroke-width="1.5" fill="none">
                     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
@@ -119,23 +111,6 @@
                 <span>Профиль</span>
             </button>
         </nav>
-
-        <!-- MODAL -->
-        <div id="product-modal" class="modal hidden">
-            <div class="modal-content">
-                <button class="modal-close">×</button>
-                <img id="modal-img" src="" alt="">
-                <div class="modal-info">
-                    <h2 id="modal-title"></h2>
-                    <p id="modal-price"></p>
-                    <p id="modal-desc">Описание товара будет здесь...</p>
-                    <div class="modal-actions">
-                        <button id="modal-cart-btn" class="btn-primary">В корзину</button>
-                        <button id="modal-wish-btn" class="btn-outline">В избранное</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="script.js"></script>
