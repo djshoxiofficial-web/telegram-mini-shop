@@ -13,7 +13,11 @@ const products = [
     { id: 3, name: 'Белая футболка базовая', price: 1890, category: 'tshirts', img: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400' },
     { id: 4, name: 'Рубашка в клетку', price: 3490, category: 'shirts', img: 'https://images.unsplash.com/photo-1600185365926-3a6d3a1b0d9f?w=400' },
     { id: 5, name: 'Мом джинсы светлые', price: 5290, category: 'jeans', img: 'https://images.unsplash.com/photo-1541099649102-63e9671d437e?w=400' },
-    { id: 6, name: 'Кепка классическая', price: 1490, category: 'accessories', img: 'https://images.unsplash.com/photo-1576871333932-2a5c530d5e6f?w=400' }
+    { id: 6, name: 'Кепка классическая', price: 1490, category: 'accessories', img: 'https://images.unsplash.com/photo-1576871333932-2a5c530d5e6f?w=400' },
+    { id: 7, name: 'Чёрная куртка кожаная', price: 8990, category: 'jackets', img: 'https://images.unsplash.com/photo-1521223341520-5d9d352b31b0?w=400' },
+    { id: 8, name: 'Футболка с принтом', price: 2290, category: 'tshirts', img: 'https://images.unsplash.com/photo-1521575107034-e0fa0b594529?w=400' },
+    { id: 9, name: 'Рубашка белая классика', price: 2990, category: 'shirts', img: 'https://images.unsplash.com/photo-1603252109303-533cc7260601?w=400' },
+    { id: 10, name: 'Ремень кожаный', price: 1990, category: 'accessories', img: 'https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?w=400' }
 ];
 
 let wishlist = JSON.parse(localStorage.getItem('ws-wishlist')) || [];
@@ -51,8 +55,12 @@ function renderCategories() {
     });
 }
 
+function renderCatalog() {
+    renderProducts('all');
+}
+
 function renderProducts(categoryId = 'all') {
-    const container = document.querySelector('.products-grid');
+    const container = document.querySelector('#catalog .products-grid');
     container.innerHTML = '';
 
     const filtered = categoryId === 'all'
@@ -63,15 +71,15 @@ function renderProducts(categoryId = 'all') {
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-            <img src="${p.img}" alt="${p.name}">
+            <img src="$$   {p.img}" alt="   $${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
                 <div class="product-price">${p.price} ₽</div>
                 <div class="actions-row">
-                    <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
+                    <button class="btn-icon wish-btn $$   {wishlist.includes(p.id) ? 'liked' : ''}" data-id="   $${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
-                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                    <button class="btn-icon cart-btn $$   {cart.includes(p.id) ? 'in-cart' : ''}" data-id="   $${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
                     </button>
                 </div>
@@ -90,16 +98,18 @@ function renderWishlist() {
 
     if (items.length === 0) {
         empty.classList.remove('hidden');
+        container.classList.add('hidden');
         return;
     }
 
     empty.classList.add('hidden');
+    container.classList.remove('hidden');
 
     items.forEach(p => {
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-            <img src="${p.img}" alt="${p.name}">
+            <img src="$$   {p.img}" alt="   $${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
                 <div class="product-price">${p.price} ₽</div>
@@ -107,7 +117,7 @@ function renderWishlist() {
                     <button class="btn-icon wish-btn liked" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
-                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                    <button class="btn-icon cart-btn $$   {cart.includes(p.id) ? 'in-cart' : ''}" data-id="   $${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
                     </button>
                 </div>
@@ -126,24 +136,26 @@ function renderCart() {
 
     if (items.length === 0) {
         empty.classList.remove('hidden');
+        container.classList.add('hidden');
         return;
     }
 
     empty.classList.add('hidden');
+    container.classList.remove('hidden');
 
     items.forEach(p => {
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
-            <img src="${p.img}" alt="${p.name}">
+            <img src="$$   {p.img}" alt="   $${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
                 <div class="product-price">${p.price} ₽</div>
                 <div class="actions-row">
-                    <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
+                    <button class="btn-icon wish-btn $$   {wishlist.includes(p.id) ? 'liked' : ''}" data-id="   $${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                     </button>
-                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                    <button class="btn-icon cart-btn in-cart" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
                     </button>
                 </div>
@@ -175,23 +187,42 @@ function toggleWish(id) {
 
     // обновляем все сердечки на странице
     document.querySelectorAll(`.wish-btn[data-id="${id}"]`).forEach(el => {
-        el.classList.toggle('liked');
+        el.classList.toggle('liked', wishlist.includes(id));
     });
 
     if (document.getElementById('wishlist').classList.contains('active')) {
         renderWishlist();
     }
+    if (document.getElementById('catalog').classList.contains('active')) {
+        renderProducts(document.querySelector('.category.active').dataset.id);
+    }
+    if (document.getElementById('cart').classList.contains('active')) {
+        renderCart();
+    }
 }
 
-function addToCart(id) {
-    if (!cart.includes(id)) {
+function toggleCart(id) {
+    if (cart.includes(id)) {
+        cart = cart.filter(x => x !== id);
+    } else {
         cart.push(id);
-        localStorage.setItem('ws-cart', JSON.stringify(cart));
-        updateBadges();
+    }
+    localStorage.setItem('ws-cart', JSON.stringify(cart));
+    updateBadges();
 
-        if (document.getElementById('cart').classList.contains('active')) {
-            renderCart();
-        }
+    // обновляем все кнопки корзины на странице
+    document.querySelectorAll(`.cart-btn[data-id="${id}"]`).forEach(el => {
+        el.classList.toggle('in-cart', cart.includes(id));
+    });
+
+    if (document.getElementById('cart').classList.contains('active')) {
+        renderCart();
+    }
+    if (document.getElementById('catalog').classList.contains('active')) {
+        renderProducts(document.querySelector('.category.active').dataset.id);
+    }
+    if (document.getElementById('wishlist').classList.contains('active')) {
+        renderWishlist();
     }
 }
 
@@ -213,7 +244,8 @@ document.addEventListener('click', e => {
     const cartBtn = e.target.closest('.cart-btn');
     if (cartBtn) {
         const id = Number(cartBtn.dataset.id);
-        addToCart(id);
+        toggleCart(id);
+        return;
     }
 });
 
