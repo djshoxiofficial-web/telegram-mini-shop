@@ -8,19 +8,20 @@
 </head>
 <body>
     <div id="app">
+
         <!-- HOME -->
         <div id="home" class="screen active">
             <div class="hero">
                 <div class="hero-content">
                     <h1>WEB SHOP</h1>
-                    <p>Модная одежда и аксессуары</p>
+                    <p>Стильная одежда по лучшим ценам</p>
                 </div>
             </div>
         </div>
 
         <!-- CATALOG -->
         <div id="catalog" class="screen">
-            <div class="catalog-header">Каталог</div>
+            <div class="screen-header">Каталог</div>
             <div class="categories-scroll">
                 <div class="categories"></div>
             </div>
@@ -32,9 +33,10 @@
             <div class="screen-header">Избранное</div>
             <div class="products-grid wishlist-grid"></div>
             <div class="empty empty-wishlist hidden">
-                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#e0e0e0" stroke-width="1.4" fill="none">
+                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ddd" stroke-width="1.5" fill="none">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
+                <p>В избранном пока ничего нет</p>
             </div>
         </div>
 
@@ -43,11 +45,12 @@
             <div class="screen-header">Корзина</div>
             <div class="products-grid cart-grid"></div>
             <div class="empty empty-cart hidden">
-                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#e0e0e0" stroke-width="1.4" fill="none">
+                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ddd" stroke-width="1.5" fill="none">
                     <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
                     <path d="M3 6h18"/>
                     <path d="M16 10a4 4 0 01-8 0"/>
                 </svg>
+                <p>Корзина пуста</p>
             </div>
         </div>
 
@@ -55,14 +58,14 @@
         <div id="profile" class="screen">
             <div class="screen-header">Профиль</div>
             <div class="profile-placeholder">
-                <p>Личный кабинет скоро появится</p>
+                <p>Личный кабинет в разработке</p>
             </div>
         </div>
 
         <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
             <button data-target="home" class="nav-btn active">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                     <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
                     <path d="M9 22V12h6v10"/>
                 </svg>
@@ -71,7 +74,7 @@
 
             <button data-target="wishlist" class="nav-btn">
                 <div class="icon-wrapper">
-                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                     </svg>
                     <span class="badge wishlist-badge hidden">0</span>
@@ -80,16 +83,19 @@
             </button>
 
             <button data-target="catalog" class="nav-btn">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none">
-                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
                 </svg>
                 <span>Каталог</span>
             </button>
 
             <button data-target="cart" class="nav-btn">
                 <div class="icon-wrapper">
-                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none">
-                        <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
                         <path d="M3 6h18M16 10a4 4 0 11-8 0"/>
                     </svg>
                     <span class="badge cart-badge hidden">0</span>
@@ -98,7 +104,7 @@
             </button>
 
             <button data-target="profile" class="nav-btn">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="1.8" fill="none">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                     <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
                     <circle cx="12" cy="7" r="4"/>
                 </svg>
@@ -110,4 +116,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
