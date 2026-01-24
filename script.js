@@ -1,163 +1,225 @@
 const categories = [
-    { id: 'all', name: 'All' },
-    { id: 'electronics', name: 'Electronics' },
-    { id: 'clothing', name: 'Clothing' },
-    { id: 'books', name: 'Books' }
+    { id: 'all', name: 'Все' },
+    { id: 'jeans', name: 'Джинсы' },
+    { id: 'jackets', name: 'Куртки' },
+    { id: 'shirts', name: 'Рубашки' },
+    { id: 'tshirts', name: 'Футболки' },
+    { id: 'accessories', name: 'Аксессуары' }
 ];
 
 const products = [
-    { id: 1, name: 'Product 1', price: 10, category: 'electronics', image: 'https://via.placeholder.com/150' },
-    { id: 2, name: 'Product 2', price: 20, category: 'clothing', image: 'https://via.placeholder.com/150' },
-    { id: 3, name: 'Product 3', price: 30, category: 'books', image: 'https://via.placeholder.com/150' },
-    { id: 4, name: 'Product 4', price: 40, category: 'electronics', image: 'https://via.placeholder.com/150' }
+    { id: 1, name: 'Скинни джинсы чёрные рваные', price: 4590, category: 'jeans', img: 'https://images.unsplash.com/photo-1602293589932-d4d7e968a6a3?w=400' },
+    { id: 2, name: 'Джинсовая куртка оверсайз', price: 6890, category: 'jackets', img: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400' },
+    { id: 3, name: 'Белая футболка базовая', price: 1890, category: 'tshirts', img: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=400' },
+    { id: 4, name: 'Рубашка в клетку', price: 3490, category: 'shirts', img: 'https://images.unsplash.com/photo-1600185365926-3a6d3a1b0d9f?w=400' },
+    { id: 5, name: 'Мом джинсы светлые', price: 5290, category: 'jeans', img: 'https://images.unsplash.com/photo-1541099649102-63e9671d437e?w=400' },
+    { id: 6, name: 'Кепка классическая', price: 1490, category: 'accessories', img: 'https://images.unsplash.com/photo-1576871333932-2a5c530d5e6f?w=400' }
 ];
 
-let currentScreen = 'home';
-let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let wishlist = JSON.parse(localStorage.getItem('ws-wishlist')) || [];
+let cart = JSON.parse(localStorage.getItem('ws-cart')) || [];
+
+const screens = document.querySelectorAll('.screen');
+const navButtons = document.querySelectorAll('.nav-btn');
+
+function switchScreen(target) {
+    screens.forEach(s => s.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+
+    navButtons.forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-target="${target}"]`).classList.add('active');
+
+    if (target === 'catalog') renderCatalog();
+    if (target === 'wishlist') renderWishlist();
+    if (target === 'cart') renderCart();
+}
 
 function renderCategories() {
-    const categoriesContainer = document.querySelector('#catalog-screen .categories');
-    categoriesContainer.innerHTML = '';
-    categories.forEach(cat => {
-        const btn = document.createElement('div');
-        btn.classList.add('category');
-        btn.textContent = cat.name;
-        btn.dataset.category = cat.id;
-        btn.addEventListener('click', () => filterProducts(cat.id));
-        categoriesContainer.appendChild(btn);
-    });
-    categoriesContainer.querySelector('.category:first-child').classList.add('active');
-}
-
-function renderProducts(container, items, isWishlist = false, isCart = false) {
+    const container = document.querySelector('.categories');
     container.innerHTML = '';
-    items.forEach(product => {
-        const card = document.createElement('div');
-        card.classList.add('product-card');
-        card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}">
-            <h3>${product.name}</h3>
-            <p>$${product.price}</p>
-            <button class="wish-btn ${wishlist.includes(product.id) ? 'active' : ''}">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"/>
-                    <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z"/>
-                </svg>
-            </button>
-            <button class="cart-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"/>
-                </svg>
-            </button>
-        `;
-        card.querySelector('.wish-btn').addEventListener('click', () => toggleWishlist(product.id));
-        card.querySelector('.cart-btn').addEventListener('click', () => addToCart(product.id));
-        container.appendChild(card);
+    categories.forEach((cat, i) => {
+        const el = document.createElement('div');
+        el.className = 'category' + (i === 0 ? ' active' : '');
+        el.textContent = cat.name;
+        el.dataset.id = cat.id;
+        el.addEventListener('click', () => {
+            document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            renderProducts(cat.id);
+        });
+        container.appendChild(el);
     });
 }
 
-function filterProducts(category) {
-    const buttons = document.querySelectorAll('.category');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`.category[data-category="${category}"]`).classList.add('active');
+function renderProducts(categoryId = 'all') {
+    const container = document.querySelector('.products-grid');
+    container.innerHTML = '';
 
-    const filtered = category === 'all' ? products : products.filter(p => p.category === category);
-    renderProducts(document.querySelector('#catalog-screen .products'), filtered);
+    const filtered = categoryId === 'all'
+        ? products
+        : products.filter(p => p.category === categoryId);
+
+    filtered.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">${p.price} ₽</div>
+                <div class="actions-row">
+                    <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
 }
 
-function toggleWishlist(id) {
+function renderWishlist() {
+    const container = document.querySelector('.wishlist-grid');
+    const empty = document.querySelector('.empty-wishlist');
+    container.innerHTML = '';
+
+    const items = products.filter(p => wishlist.includes(p.id));
+
+    if (items.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    empty.classList.add('hidden');
+
+    items.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">${p.price} ₽</div>
+                <div class="actions-row">
+                    <button class="btn-icon wish-btn liked" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function renderCart() {
+    const container = document.querySelector('.cart-grid');
+    const empty = document.querySelector('.empty-cart');
+    container.innerHTML = '';
+
+    const items = products.filter(p => cart.includes(p.id));
+
+    if (items.length === 0) {
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    empty.classList.add('hidden');
+
+    items.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+            <img src="${p.img}" alt="${p.name}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">${p.price} ₽</div>
+                <div class="actions-row">
+                    <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    </button>
+                    <button class="btn-icon cart-btn" data-id="${p.id}">
+                        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function updateBadges() {
+    const wBadge = document.querySelector('.wishlist-badge');
+    const cBadge = document.querySelector('.cart-badge');
+
+    wBadge.textContent = wishlist.length;
+    wBadge.classList.toggle('hidden', wishlist.length < 1);
+
+    cBadge.textContent = cart.length;
+    cBadge.classList.toggle('hidden', cart.length < 1);
+}
+
+function toggleWish(id) {
     if (wishlist.includes(id)) {
-        wishlist = wishlist.filter(w => w !== id);
+        wishlist = wishlist.filter(x => x !== id);
     } else {
         wishlist.push(id);
     }
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    localStorage.setItem('ws-wishlist', JSON.stringify(wishlist));
     updateBadges();
-    if (currentScreen === 'wishlist') {
+
+    // обновляем все сердечки на странице
+    document.querySelectorAll(`.wish-btn[data-id="${id}"]`).forEach(el => {
+        el.classList.toggle('liked');
+    });
+
+    if (document.getElementById('wishlist').classList.contains('active')) {
         renderWishlist();
     }
-    // Update button state in all visible cards
-    document.querySelectorAll('.wish-btn').forEach(btn => {
-        const card = btn.closest('.product-card');
-        if (card) {
-            const prodId = products.find(p => p.name === card.querySelector('h3').textContent).id;
-            btn.classList.toggle('active', wishlist.includes(prodId));
-        }
-    });
 }
 
 function addToCart(id) {
     if (!cart.includes(id)) {
         cart.push(id);
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('ws-cart', JSON.stringify(cart));
         updateBadges();
-        if (currentScreen === 'cart') {
+
+        if (document.getElementById('cart').classList.contains('active')) {
             renderCart();
         }
     }
 }
 
-function renderWishlist() {
-    const container = document.querySelector('#wishlist-screen .products');
-    const empty = document.querySelector('#wishlist-screen .empty-state');
-    const items = products.filter(p => wishlist.includes(p.id));
-    if (items.length === 0) {
-        container.classList.add('hidden');
-        empty.classList.remove('hidden');
-    } else {
-        container.classList.remove('hidden');
-        empty.classList.add('hidden');
-        renderProducts(container, items, true);
-    }
-}
-
-function renderCart() {
-    const container = document.querySelector('#cart-screen .products');
-    const empty = document.querySelector('#cart-screen .empty-state');
-    const items = products.filter(p => cart.includes(p.id));
-    if (items.length === 0) {
-        container.classList.add('hidden');
-        empty.classList.remove('hidden');
-    } else {
-        container.classList.remove('hidden');
-        empty.classList.add('hidden');
-        renderProducts(container, items, false, true);
-    }
-}
-
-function updateBadges() {
-    document.querySelector('[data-screen="wishlist"] .badge').textContent = wishlist.length;
-    document.querySelector('[data-screen="wishlist"] .badge').classList.toggle('hidden', wishlist.length === 0);
-    document.querySelector('[data-screen="cart"] .badge').textContent = cart.length;
-    document.querySelector('[data-screen="cart"] .badge').classList.toggle('hidden', cart.length === 0);
-}
-
-function switchScreen(screen) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-    const target = document.querySelector(`#${screen}-screen`);
-    target.classList.remove('hidden');
-    document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-screen="${screen}"]`).classList.add('active');
-
-    if (screen === 'catalog') {
-        filterProducts('all');
-    } else if (screen === 'wishlist') {
-        renderWishlist();
-    } else if (screen === 'cart') {
-        renderCart();
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.nav-btn');
+    if (btn) {
+        const target = btn.dataset.target;
+        switchScreen(target);
+        return;
     }
 
-    currentScreen = screen;
-}
+    const wishBtn = e.target.closest('.wish-btn');
+    if (wishBtn) {
+        const id = Number(wishBtn.dataset.id);
+        toggleWish(id);
+        return;
+    }
+
+    const cartBtn = e.target.closest('.cart-btn');
+    if (cartBtn) {
+        const id = Number(cartBtn.dataset.id);
+        addToCart(id);
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     renderCategories();
-    renderProducts(document.querySelector('#catalog-screen .products'), products);
+    renderProducts();
     updateBadges();
     switchScreen('home');
-
-    document.querySelectorAll('.bottom-nav button').forEach(btn => {
-        btn.addEventListener('click', () => switchScreen(btn.dataset.screen));
-    });
 });
