@@ -454,7 +454,42 @@ body {
     transform: translateY(-2px);
 }
 
+/* предыдущие стили + новые для "О нас" и кнопки */
+
+.about-content {
+    padding: 20px;
+    background: white;
+    border-radius: 24px;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.about-content p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #3a1f2c;
+    margin-bottom: 16px;
+}
+
+.btn-manager {
+    padding: 14px 32px;
+    background: #ff6b81;
+    color: white;
+    border-radius: 28px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(255,107,129,0.3);
+    transition: all 0.28s ease;
+}
+
+.btn-manager:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(255,107,129,0.4);
+}
+
 /* остальной стиль из предыдущей версии остаётся */
 
 .hidden { display: none !important; }
+
 
