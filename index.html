@@ -23,8 +23,34 @@
         <!-- CATALOG -->
         <div id="catalog" class="screen">
             <div class="screen-header">Каталог</div>
-            <div class="categories-scroll">
-                <div class="categories"></div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Цена</label>
+                    <input type="range" id="price-range" min="0" max="30000" value="30000" step="1000">
+                    <span id="price-value">до 30 000 ₽</span>
+                </div>
+                <div class="filter-group">
+                    <label>Гамма</label>
+                    <select id="gamma-filter">
+                        <option value="all">Все</option>
+                        <option value="white">Белая</option>
+                        <option value="tender">Нежная</option>
+                        <option value="bright">Яркая</option>
+                        <option value="season">Сезонная</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Тип букета</label>
+                    <select id="type-filter">
+                        <option value="all">Все</option>
+                        <option value="monobukety">Монобукеты</option>
+                        <option value="sbornye">Сборные букеты</option>
+                        <option value="kompozicii-v-korzine">Композиции в корзине</option>
+                        <option value="ekzoticheskie-ohapki">Экзотические охапки</option>
+                        <option value="banchi">Банчи</option>
+                        <option value="svadebnye">Свадебные букеты</option>
+                    </select>
+                </div>
             </div>
             <div class="products-grid"></div>
         </div>
@@ -114,4 +140,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
