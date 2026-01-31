@@ -1,5 +1,4 @@
-// Полный script.js (без изменений, только для полноты)
-
+// Данные
 const categories = [
     { id: 'all', name: 'Все' },
     { id: 'monobukety', name: 'Монобукеты' },
@@ -23,9 +22,11 @@ const products = [
 let wishlist = JSON.parse(localStorage.getItem('bm-wishlist')) || [];
 let cart = JSON.parse(localStorage.getItem('bm-cart')) || [];
 
+// Элементы
 const screens = document.querySelectorAll('.screen');
 const navButtons = document.querySelectorAll('.nav-btn');
 
+// Переключение экранов
 function switchScreen(target) {
     screens.forEach(s => s.classList.remove('active'));
     document.getElementById(target).classList.add('active');
@@ -38,6 +39,7 @@ function switchScreen(target) {
     if (target === 'cart') renderCart();
 }
 
+// Рендер категорий
 function renderCategories() {
     const cont = document.querySelector('.categories');
     cont.innerHTML = '';
@@ -55,6 +57,7 @@ function renderCategories() {
     });
 }
 
+// Применение фильтров
 function applyFilters() {
     const priceMax = document.getElementById('price-range').value;
     const gamma = document.getElementById('gamma-filter').value;
@@ -65,6 +68,7 @@ function applyFilters() {
     renderProducts('all', priceMax, gamma, type);
 }
 
+// Рендер товаров
 function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = 'all') {
     const cont = document.querySelector('#catalog .products-grid');
     cont.innerHTML = '';
@@ -97,6 +101,7 @@ function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = '
     });
 }
 
+// Рендер избранного
 function renderWishlist() {
     const cont = document.querySelector('.wishlist-grid');
     const empty = document.querySelector('.empty-wishlist');
@@ -131,6 +136,7 @@ function renderWishlist() {
     });
 }
 
+// Рендер корзины
 function renderCart() {
     const cont = document.querySelector('.cart-grid');
     const empty = document.querySelector('.empty-cart');
@@ -179,6 +185,7 @@ function renderCart() {
     document.getElementById('cart-sum').textContent = total.toLocaleString() + ' ₽';
 }
 
+// Обновление бейджей
 function updateBadges() {
     const w = document.querySelector('.wishlist-badge');
     const c = document.querySelector('.cart-badge');
@@ -191,6 +198,7 @@ function updateBadges() {
     c.classList.toggle('hidden', cartCount === 0);
 }
 
+// Переключение избранного
 function toggleWish(id) {
     if (wishlist.includes(id)) {
         wishlist = wishlist.filter(x => x !== id);
@@ -207,6 +215,7 @@ function toggleWish(id) {
     if (document.getElementById('wishlist').classList.contains('active')) renderWishlist();
 }
 
+// Управление корзиной
 function updateCartItem(id, delta) {
     const idx = cart.findIndex(item => item.id === id);
     if (idx === -1) {
@@ -220,6 +229,7 @@ function updateCartItem(id, delta) {
     if (document.getElementById('cart').classList.contains('active')) renderCart();
 }
 
+// Обработчик кликов
 document.addEventListener('click', e => {
     const btn = e.target.closest('.nav-btn');
     if (btn) {
@@ -266,6 +276,15 @@ document.addEventListener('click', e => {
         }
         updateBadges();
     }
+});
+
+// события фильтров
+document.addEventListener('input', e => {
+    if (e.target.id === 'price-range') applyFilters();
+});
+
+document.addEventListener('change', e => {
+    if (e.target.id === 'gamma-filter' || e.target.id === 'type-filter') applyFilters();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
