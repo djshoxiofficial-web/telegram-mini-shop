@@ -12,10 +12,17 @@
         <!-- HOME -->
         <div id="home" class="screen active">
             <div class="hero">
+                <img src="https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=800" alt="Главный букет" class="hero-bg">
+                <div class="hero-overlay"></div>
                 <div class="hero-content">
                     <h1>Best Moments</h1>
-                    <p>Цветы для самых важных моментов</p>
-                    <a href="https://t.me/best_moments_msk" target="_blank" class="btn-manager">Заказать у менеджера</a>
+                    <p>Цветы для самых важных моментов вашей жизни</p>
+                    <a href="https://t.me/best_moments_msk" target="_blank" class="btn-manager">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M9.417 15.181l.397-5.768 10.324-6.04c.452-.266.851-.105.533.266l-8.583 7.983-3.671 1.559zM11.068 13.268l9.286-5.462c.431-.258.825-.118.515.247L12.347 13.6l-.279 3.115c.41-.005.588-.188.82-.41l1.238-1.2z"/>
+                        </svg>
+                        Заказать у менеджера
+                    </a>
                 </div>
             </div>
         </div>
@@ -23,43 +30,6 @@
         <!-- CATALOG -->
         <div id="catalog" class="screen">
             <div class="screen-header">Каталог</div>
-
-            <!-- Фильтр "Быстрый заказ" -->
-            <div class="quick-order">
-                <h3>Быстрый заказ</h3>
-                <div class="quick-filters">
-                    <div class="quick-group">
-                        <label>Примерная цена</label>
-                        <input type="range" id="quick-price" min="3000" max="15000" value="7500" step="500">
-                        <span id="quick-price-val">~ 7 500 ₽</span>
-                    </div>
-                    <div class="quick-group">
-                        <label>Гамма</label>
-                        <select id="quick-gamma">
-                            <option value="all">Любая</option>
-                            <option value="white">Белая</option>
-                            <option value="tender">Нежная</option>
-                            <option value="bright">Яркая</option>
-                            <option value="season">Сезонная</option>
-                        </select>
-                    </div>
-                    <div class="quick-group">
-                        <label>Формат</label>
-                        <select id="quick-type">
-                            <option value="all">Любой</option>
-                            <option value="monobukety">Монобукет</option>
-                            <option value="sbornye">Сборный</option>
-                            <option value="kompozicii-v-korzine">В корзине</option>
-                            <option value="ekzoticheskie-ohapki">Экзотическая охапка</option>
-                            <option value="banchi">Банчи</option>
-                            <option value="svadebnye">Свадебный</option>
-                        </select>
-                    </div>
-                </div>
-                <button id="quick-send">Отправить запрос менеджеру</button>
-            </div>
-
-            <!-- Обычные фильтры -->
             <div class="filters">
                 <div class="filter-group">
                     <label>Цена</label>
