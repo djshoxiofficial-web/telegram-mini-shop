@@ -17,9 +17,9 @@ body {
     position: absolute;
     inset: 0;
     opacity: 0;
+    transform: translateY(-30px);
     pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
     overflow-y: auto;
     padding: 0 16px 120px;
 }
@@ -29,6 +29,22 @@ body {
     transform: translateY(0);
     pointer-events: auto;
     position: relative;
+}
+
+/* Анимация появления главной страницы */
+#home.active {
+    animation: slideDownFade 1.2s ease-out forwards;
+}
+
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .hero {
@@ -252,9 +268,7 @@ body {
     transition: background 0.2s;
 }
 
-.quantity-btn:hover {
-    background: #fff0f5;
-}
+.quantity-btn:hover { background: #fff0f5; }
 
 .cart-total {
     position: sticky;
@@ -303,14 +317,9 @@ body {
     text-align: center;
 }
 
-.empty svg {
-    margin-bottom: 28px;
-}
+.empty svg { margin-bottom: 28px; }
 
-.empty p {
-    font-size: 1.2rem;
-    color: #a56d84;
-}
+.empty p { font-size: 1.2rem; color: #a56d84; }
 
 .about-content, .how-content, .contacts-content {
     padding: 20px;
@@ -334,20 +343,11 @@ body {
     font-weight: 600;
 }
 
-.contacts-content a:hover {
-    text-decoration: underline;
-}
+.contacts-content a:hover { text-decoration: underline; }
 
-.how-content ol {
-    padding-left: 24px;
-    margin: 16px 0;
-}
+.how-content ol { padding-left: 24px; margin: 16px 0; }
 
-.how-content img {
-    width: 100%;
-    border-radius: 20px;
-    margin-top: 16px;
-}
+.how-content img { width: 100%; border-radius: 20px; margin-top: 16px; }
 
 .bottom-nav {
     position: fixed;
@@ -377,21 +377,13 @@ body {
     transition: color 0.28s ease;
 }
 
-.nav-btn.active {
-    color: #ff6b81;
-}
+.nav-btn.active { color: #ff6b81; }
 
-.nav-btn svg {
-    transition: transform 0.28s ease;
-}
+.nav-btn svg { transition: transform 0.28s ease; }
 
-.nav-btn.active svg {
-    transform: scale(1.2);
-}
+.nav-btn.active svg { transform: scale(1.2); }
 
-.icon-wrapper {
-    position: relative;
-}
+.icon-wrapper { position: relative; }
 
 .badge {
     position: absolute;
