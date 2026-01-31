@@ -136,7 +136,7 @@ function renderWishlist() {
     });
 }
 
-// Рендер корзины с количеством и суммой
+// Рендер корзины
 function renderCart() {
     const cont = document.querySelector('.cart-grid');
     const empty = document.querySelector('.empty-cart');
