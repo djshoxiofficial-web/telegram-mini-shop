@@ -1,4 +1,4 @@
-// Данные (без изменений)
+// Данные
 const categories = [
     { id: 'all', name: 'Все' },
     { id: 'monobukety', name: 'Монобукеты' },
