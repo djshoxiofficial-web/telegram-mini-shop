@@ -516,9 +516,49 @@ body {
     margin-top: 16px;
 }
 
+/* предыдущие стили + новые для "О нас", "Как продлить", "Контакты" */
+
+.about-content, .how-content, .contacts-content {
+    padding: 20px;
+    background: white;
+    border-radius: 24px;
+    margin-top: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.about-content p, .how-content p, .how-content ol li, .contacts-content p, .contacts-content a {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #3a1f2c;
+    margin-bottom: 16px;
+}
+
+.contacts-content a {
+    display: block;
+    color: #ff6b81;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contacts-content a:hover {
+    text-decoration: underline;
+}
+
+.how-content ol {
+    padding-left: 24px;
+    margin: 16px 0;
+}
+
+.how-content img {
+    width: 100%;
+    border-radius: 20px;
+    margin-top: 16px;
+}
+
 /* остальной стиль остаётся */
 
 .hidden { display: none !important; }
+
 
 
 
