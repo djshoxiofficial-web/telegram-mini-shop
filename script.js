@@ -1,4 +1,4 @@
-// Данные — редактируй здесь
+// Данные
 const categories = [
     { id: 'all', name: 'Все' },
     { id: 'monobukety', name: 'Монобукеты' },
@@ -10,20 +10,23 @@ const categories = [
 ];
 
 const products = [
-    { id: 1, name: 'Нежный пион и роза', price: 4500, category: 'monobuket', img: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=800' },
-    { id: 2, name: 'Сборный микс сезонный', price: 7800, category: 'sborny', img: 'https://images.unsplash.com/photo-1526045478516-99145907023c?w=800' },
-    { id: 3, name: 'Белоснежный в корзине', price: 9200, category: 'v-korzine', img: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d26?w=800' },
-    { id: 4, name: 'Экзотическая охапка', price: 13500, category: 'exotic', img: 'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=800' },
-    { id: 5, name: 'Банчи нежный', price: 6800, category: 'banchi', img: 'https://images.unsplash.com/photo-1591883151848-5b2c6e3c0b3e?w=800' },
-    { id: 6, name: 'Свадебный каскад', price: 18500, category: 'svadebnye', img: 'https://images.unsplash.com/photo-1519227355832-2b7a8c0d8d3a?w=800' }
+    { id: 1, name: 'Нежный пионный монобукет', price: 4500, category: 'monobukety', img: 'https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?w=800' },
+    { id: 2, name: 'Сборный микс роз и эвкалипта', price: 7800, category: 'sbornye', img: 'https://images.unsplash.com/photo-1526045478516-99145907023c?w=800' },
+    { id: 3, name: 'Белая композиция в корзине', price: 9200, category: 'kompozicii-v-korzine', img: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d26?w=800' },
+    { id: 4, name: 'Экзотическая охапка протеи и орхидей', price: 13500, category: 'ekzoticheskie-ohapki', img: 'https://images.unsplash.com/photo-1607305387299-a3d9611cd469?w=800' },
+    { id: 5, name: 'Банчи пастельных оттенков', price: 6800, category: 'banchi', img: 'https://images.unsplash.com/photo-1591883151848-5b2c6e3c0b3e?w=800' },
+    { id: 6, name: 'Свадебный каскад из пионов и роз', price: 18500, category: 'svadebnye', img: 'https://images.unsplash.com/photo-1519227355832-2b7a8c0d8d3a?w=800' },
+    { id: 7, name: 'Монобукет полевых цветов', price: 3800, category: 'monobukety', img: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800' }
 ];
 
 let wishlist = JSON.parse(localStorage.getItem('bm-wishlist')) || [];
 let cart = JSON.parse(localStorage.getItem('bm-cart')) || [];
 
+// Элементы
 const screens = document.querySelectorAll('.screen');
 const navButtons = document.querySelectorAll('.nav-btn');
 
+// Переключение экранов
 function switchScreen(target) {
     screens.forEach(s => s.classList.remove('active'));
     document.getElementById(target).classList.add('active');
@@ -36,6 +39,7 @@ function switchScreen(target) {
     if (target === 'cart') renderCart();
 }
 
+// Рендер категорий
 function renderCategories() {
     const cont = document.querySelector('.categories');
     cont.innerHTML = '';
@@ -53,11 +57,41 @@ function renderCategories() {
     });
 }
 
-function renderProducts(catId = 'all') {
+// Применение фильтров
+function applyFilters() {
+    const priceMax = document.getElementById('price-range').value;
+    const gamma = document.getElementById('gamma-filter').value;
+    const type = document.getElementById('type-filter').value;
+
+    document.getElementById('price-value').textContent = `до ${Number(priceMax).toLocaleString()} ₽`;
+
+    renderProducts('all', priceMax, gamma, type);
+}
+
+// Рендер товаров с фильтрами
+function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = 'all') {
     const cont = document.querySelector('#catalog .products-grid');
     cont.innerHTML = '';
 
-    const filtered = catId === 'all' ? products : products.filter(p => p.category === catId);
+    let filtered = products;
+
+    // по категории (из клика по категории)
+    if (catId !== 'all') {
+        filtered = filtered.filter(p => p.category === catId);
+    }
+
+    // по цене
+    filtered = filtered.filter(p => p.price <= priceMax);
+
+    // по гамме (пока заглушка — можно потом связать с цветами)
+    if (gamma !== 'all') {
+        // логика по цветам, если будет нужно
+    }
+
+    // по типу (уже по category)
+    if (type !== 'all') {
+        filtered = filtered.filter(p => p.category === type);
+    }
 
     filtered.forEach(p => {
         const div = document.createElement('div');
@@ -66,7 +100,7 @@ function renderProducts(catId = 'all') {
             <img src="${p.img}" alt="${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
-                <div class="product-price">${p.price} ₽</div>
+                <div class="product-price">${p.price.toLocaleString()} ₽</div>
                 <div class="actions-row">
                     <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -102,7 +136,7 @@ function renderWishlist() {
             <img src="${p.img}" alt="${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
-                <div class="product-price">${p.price} ₽</div>
+                <div class="product-price">${p.price.toLocaleString()} ₽</div>
                 <div class="actions-row">
                     <button class="btn-icon wish-btn liked" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -136,7 +170,7 @@ function renderCart() {
             <img src="${p.img}" alt="${p.name}">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
-                <div class="product-price">${p.price} ₽</div>
+                <div class="product-price">${p.price.toLocaleString()} ₽</div>
                 <div class="actions-row">
                     <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -222,10 +256,22 @@ document.addEventListener('click', e => {
     }
 });
 
+// события фильтров
+document.addEventListener('input', e => {
+    if (e.target.id === 'price-range' || e.target.id === 'gamma-filter' || e.target.id === 'type-filter') {
+        applyFilters();
+    }
+});
+
+document.addEventListener('change', e => {
+    if (e.target.id === 'gamma-filter' || e.target.id === 'type-filter') {
+        applyFilters();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     renderCategories();
     renderProducts();
     updateBadges();
     switchScreen('home');
 });
-
