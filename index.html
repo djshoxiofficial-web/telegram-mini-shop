@@ -142,6 +142,54 @@
                 <span>Профиль</span>
             </button>
         </nav>
+
+        <!-- MODAL ОФОРМЛЕНИЕ ЗАКАЗА -->
+        <div id="order-modal" class="modal hidden">
+            <div class="modal-content">
+                <button class="modal-close">×</button>
+                <h2>Оформление заказа</h2>
+                <form id="order-form">
+                    <label>Имя заказчика</label>
+                    <input type="text" id="order-name" required>
+
+                    <label>Телефон</label>
+                    <input type="tel" id="order-phone" required>
+
+                    <label>Telegram</label>
+                    <input type="text" id="order-tg">
+
+                    <label>Адрес доставки</label>
+                    <input type="text" id="order-address" required>
+
+                    <label>Дата доставки</label>
+                    <input type="date" id="order-date" required>
+
+                    <label>Интервал доставки</label>
+                    <select id="order-interval" required>
+                        <option value="">Выберите интервал</option>
+                        <option value="10-12">10:00–12:00</option>
+                        <option value="12-14">12:00–14:00</option>
+                        <option value="14-16">14:00–16:00</option>
+                        <option value="16-18">16:00–18:00</option>
+                        <option value="18-20">18:00–20:00</option>
+                        <option value="20-22">20:00–22:00</option>
+                    </select>
+
+                    <label>Комментарий к заказу</label>
+                    <textarea id="order-comment"></textarea>
+
+                    <label>Текст для открытки</label>
+                    <textarea id="order-card-text"></textarea>
+
+                    <label>
+                        <input type="checkbox" id="order-same-recipient" checked>
+                        Получатель совпадает с заказчиком
+                    </label>
+
+                    <button type="submit" class="btn-submit">Отправить заказ</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
