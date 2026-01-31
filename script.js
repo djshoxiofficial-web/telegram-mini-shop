@@ -20,7 +20,7 @@ const products = [
 ];
 
 let wishlist = JSON.parse(localStorage.getItem('bm-wishlist')) || [];
-let cart = JSON.parse(localStorage.getItem('bm-cart')) || [];
+let cart = JSON.parse(localStorage.getItem('bm-cart')) || [] || []; // массив объектов {id, qty}
 
 // Элементы
 const screens = document.querySelectorAll('.screen');
@@ -68,30 +68,17 @@ function applyFilters() {
     renderProducts('all', priceMax, gamma, type);
 }
 
-// Рендер товаров с фильтрами
+// Рендер товаров
 function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = 'all') {
     const cont = document.querySelector('#catalog .products-grid');
     cont.innerHTML = '';
 
     let filtered = products;
 
-    // по категории (из клика по категории)
-    if (catId !== 'all') {
-        filtered = filtered.filter(p => p.category === catId);
-    }
-
-    // по цене
+    if (catId !== 'all') filtered = filtered.filter(p => p.category === catId);
     filtered = filtered.filter(p => p.price <= priceMax);
-
-    // по гамме (пока заглушка — можно потом связать с цветами)
-    if (gamma !== 'all') {
-        // логика по цветам, если будет нужно
-    }
-
-    // по типу (уже по category)
-    if (type !== 'all') {
-        filtered = filtered.filter(p => p.category === type);
-    }
+    if (type !== 'all') filtered = filtered.filter(p => p.category === type);
+    // gamma — пока заглушка
 
     filtered.forEach(p => {
         const div = document.createElement('div');
@@ -115,6 +102,7 @@ function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = '
     });
 }
 
+// Рендер избранного
 function renderWishlist() {
     const cont = document.querySelector('.wishlist-grid');
     const empty = document.querySelector('.empty-wishlist');
@@ -149,21 +137,29 @@ function renderWishlist() {
     });
 }
 
+// Рендер корзины с количеством и суммой
 function renderCart() {
     const cont = document.querySelector('.cart-grid');
     const empty = document.querySelector('.empty-cart');
+    const totalBlock = document.querySelector('.cart-total');
     cont.innerHTML = '';
 
-    const items = products.filter(p => cart.includes(p.id));
-
-    if (items.length === 0) {
+    if (cart.length === 0) {
         empty.classList.remove('hidden');
+        totalBlock.classList.add('hidden');
         return;
     }
 
     empty.classList.add('hidden');
+    totalBlock.classList.remove('hidden');
 
-    items.forEach(p => {
+    let total = 0;
+
+    cart.forEach(item => {
+        const p = products.find(prod => prod.id === item.id);
+        if (!p) return;
+        total += p.price * item.qty;
+
         const div = document.createElement('div');
         div.className = 'product';
         div.innerHTML = `
@@ -171,6 +167,11 @@ function renderCart() {
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
                 <div class="product-price">${p.price.toLocaleString()} ₽</div>
+                <div class="quantity-control">
+                    <button class="quantity-btn minus" data-id="${p.id}">-</button>
+                    <span>${item.qty}</span>
+                    <button class="quantity-btn plus" data-id="${p.id}">+</button>
+                </div>
                 <div class="actions-row">
                     <button class="btn-icon wish-btn ${wishlist.includes(p.id) ? 'liked' : ''}" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -181,8 +182,11 @@ function renderCart() {
         `;
         cont.appendChild(div);
     });
+
+    document.getElementById('cart-sum').textContent = total.toLocaleString() + ' ₽';
 }
 
+// Обновление бейджей
 function updateBadges() {
     const w = document.querySelector('.wishlist-badge');
     const c = document.querySelector('.cart-badge');
@@ -190,10 +194,12 @@ function updateBadges() {
     w.textContent = wishlist.length;
     w.classList.toggle('hidden', wishlist.length === 0);
 
-    c.textContent = cart.length;
-    c.classList.toggle('hidden', cart.length === 0);
+    const cartCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    c.textContent = cartCount;
+    c.classList.toggle('hidden', cartCount === 0);
 }
 
+// Переключение избранного
 function toggleWish(id) {
     if (wishlist.includes(id)) {
         wishlist = wishlist.filter(x => x !== id);
@@ -210,16 +216,21 @@ function toggleWish(id) {
     if (document.getElementById('wishlist').classList.contains('active')) renderWishlist();
 }
 
-function addToCart(id) {
-    if (!cart.includes(id)) {
-        cart.push(id);
-        localStorage.setItem('bm-cart', JSON.stringify(cart));
-        updateBadges();
-
-        if (document.getElementById('cart').classList.contains('active')) renderCart();
+// Управление корзиной
+function updateCartItem(id, delta) {
+    const idx = cart.findIndex(item => item.id === id);
+    if (idx === -1) {
+        if (delta > 0) cart.push({ id, qty: 1 });
+    } else {
+        cart[idx].qty = Math.max(1, cart[idx].qty + delta);
+        if (cart[idx].qty === 0) cart.splice(idx, 1);
     }
+    localStorage.setItem('bm-cart', JSON.stringify(cart));
+    updateBadges();
+    if (document.getElementById('cart').classList.contains('active')) renderCart();
 }
 
+// Обработчик кликов
 document.addEventListener('click', e => {
     const btn = e.target.closest('.nav-btn');
     if (btn) {
@@ -235,7 +246,19 @@ document.addEventListener('click', e => {
 
     const cartBtn = e.target.closest('.cart-btn');
     if (cartBtn) {
-        addToCart(Number(cartBtn.dataset.id));
+        updateCartItem(Number(cartBtn.dataset.id), 1);
+        return;
+    }
+
+    const minus = e.target.closest('.minus');
+    if (minus) {
+        updateCartItem(Number(minus.dataset.id), -1);
+        return;
+    }
+
+    const plus = e.target.closest('.plus');
+    if (plus) {
+        updateCartItem(Number(plus.dataset.id), 1);
         return;
     }
 
@@ -248,7 +271,7 @@ document.addEventListener('click', e => {
             localStorage.setItem('bm-wishlist', JSON.stringify(wishlist));
             renderWishlist();
         } else if (screen === 'cart') {
-            cart = cart.filter(x => x !== id);
+            cart = cart.filter(item => item.id !== id);
             localStorage.setItem('bm-cart', JSON.stringify(cart));
             renderCart();
         }
@@ -258,15 +281,11 @@ document.addEventListener('click', e => {
 
 // события фильтров
 document.addEventListener('input', e => {
-    if (e.target.id === 'price-range' || e.target.id === 'gamma-filter' || e.target.id === 'type-filter') {
-        applyFilters();
-    }
+    if (e.target.id === 'price-range') applyFilters();
 });
 
 document.addEventListener('change', e => {
-    if (e.target.id === 'gamma-filter' || e.target.id === 'type-filter') {
-        applyFilters();
-    }
+    if (e.target.id === 'gamma-filter' || e.target.id === 'type-filter') applyFilters();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
