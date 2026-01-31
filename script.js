@@ -20,11 +20,12 @@ const products = [
 ];
 
 let wishlist = JSON.parse(localStorage.getItem('bm-wishlist')) || [];
-let cart = JSON.parse(localStorage.getItem('bm-cart')) || [] || []; // массив объектов {id, qty}
+let cart = JSON.parse(localStorage.getItem('bm-cart')) || [];
 
 // Элементы
 const screens = document.querySelectorAll('.screen');
 const navButtons = document.querySelectorAll('.nav-btn');
+const orderModal = document.getElementById('order-modal');
 
 // Переключение экранов
 function switchScreen(target) {
@@ -78,7 +79,6 @@ function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = '
     if (catId !== 'all') filtered = filtered.filter(p => p.category === catId);
     filtered = filtered.filter(p => p.price <= priceMax);
     if (type !== 'all') filtered = filtered.filter(p => p.category === type);
-    // gamma — пока заглушка
 
     filtered.forEach(p => {
         const div = document.createElement('div');
@@ -95,41 +95,6 @@ function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = '
                     <button class="btn-icon cart-btn" data-id="${p.id}">
                         <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 11-8 0"/></svg>
                     </button>
-                </div>
-            </div>
-        `;
-        cont.appendChild(div);
-    });
-}
-
-// Рендер избранного
-function renderWishlist() {
-    const cont = document.querySelector('.wishlist-grid');
-    const empty = document.querySelector('.empty-wishlist');
-    cont.innerHTML = '';
-
-    const items = products.filter(p => wishlist.includes(p.id));
-
-    if (items.length === 0) {
-        empty.classList.remove('hidden');
-        return;
-    }
-
-    empty.classList.add('hidden');
-
-    items.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-            <img src="${p.img}" alt="${p.name}">
-            <div class="product-info">
-                <div class="product-title">${p.name}</div>
-                <div class="product-price">${p.price.toLocaleString()} ₽</div>
-                <div class="actions-row">
-                    <button class="btn-icon wish-btn liked" data-id="${p.id}">
-                        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                    </button>
-                    <button class="btn-remove" data-id="${p.id}">Удалить</button>
                 </div>
             </div>
         `;
@@ -230,6 +195,30 @@ function updateCartItem(id, delta) {
     if (document.getElementById('cart').classList.contains('active')) renderCart();
 }
 
+// Открыть модалку заказа
+function openOrderModal() {
+    orderModal.classList.remove('hidden');
+    orderModal.classList.add('active');
+}
+
+// Закрыть модалку
+function closeOrderModal() {
+    orderModal.classList.remove('active');
+    setTimeout(() => orderModal.classList.add('hidden'), 300);
+}
+
+// Отправка формы (имитация)
+function submitOrder(e) {
+    e.preventDefault();
+    alert('Заказ отправлен! Менеджер свяжется с вами в ближайшее время.');
+    closeOrderModal();
+    // здесь можно добавить tg.sendData или очистку корзины
+    cart = [];
+    localStorage.setItem('bm-cart', JSON.stringify(cart));
+    renderCart();
+    updateBadges();
+}
+
 // Обработчик кликов
 document.addEventListener('click', e => {
     const btn = e.target.closest('.nav-btn');
@@ -277,7 +266,19 @@ document.addEventListener('click', e => {
         }
         updateBadges();
     }
+
+    if (e.target.classList.contains('btn-checkout')) {
+        openOrderModal();
+        return;
+    }
+
+    if (e.target.classList.contains('modal-close') || e.target === orderModal) {
+        closeOrderModal();
+        return;
+    }
 });
+
+document.getElementById('order-form').addEventListener('submit', submitOrder);
 
 // события фильтров
 document.addEventListener('input', e => {
