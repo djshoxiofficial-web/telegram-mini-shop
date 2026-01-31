@@ -1,12 +1,12 @@
 // Данные — редактируй здесь
 const categories = [
     { id: 'all', name: 'Все' },
-    { id: 'monobuket', name: 'Монобукеты' },
-    { id: 'sborny', name: 'Сборные' },
-    { id: 'v-korzine', name: 'В корзине' },
-    { id: 'exotic', name: 'Экзотические охапки' },
+    { id: 'monobukety', name: 'Монобукеты' },
+    { id: 'sbornye', name: 'Сборные букеты' },
+    { id: 'kompozicii-v-korzine', name: 'Композиции в корзине' },
+    { id: 'ekzoticheskie-ohapki', name: 'Экзотические охапки' },
     { id: 'banchi', name: 'Банчи' },
-    { id: 'svadebnye', name: 'Свадебные' }
+    { id: 'svadebnye', name: 'Свадебные букеты' }
 ];
 
 const products = [
@@ -228,3 +228,4 @@ document.addEventListener('DOMContentLoaded', () => {
     updateBadges();
     switchScreen('home');
 });
+
