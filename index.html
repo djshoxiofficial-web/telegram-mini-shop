@@ -88,6 +88,18 @@
             </div>
         </div>
 
+        <!-- ABOUT -->
+        <div id="about" class="screen">
+            <div class="screen-header">О нас</div>
+            <div class="about-content">
+                <p>Самые свежие цветы с лучших плантаций мира.</p>
+                <p>Ежедневная закупка — мы привозим только то, что действительно красиво и свежо.</p>
+                <p>Эксклюзивная упаковка — брендированные ленты, наклейки, открытки.</p>
+                <p>Стильная транспортировочная коробка Best Moments — безопасная перевозка.</p>
+                <p>Персональный менеджер — остаётся с вами от выбора до получения букета.</p>
+            </div>
+        </div>
+
         <!-- PROFILE -->
         <div id="profile" class="screen">
             <div class="screen-header">Профиль</div>
@@ -134,6 +146,13 @@
                 <span>Корзина</span>
             </button>
 
+            <button data-target="about" class="nav-btn">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <span>О нас</span>
+            </button>
+
             <button data-target="profile" class="nav-btn">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                     <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
@@ -142,54 +161,6 @@
                 <span>Профиль</span>
             </button>
         </nav>
-
-        <!-- MODAL ОФОРМЛЕНИЕ ЗАКАЗА -->
-        <div id="order-modal" class="modal hidden">
-            <div class="modal-content">
-                <button class="modal-close">×</button>
-                <h2>Оформление заказа</h2>
-                <form id="order-form">
-                    <label>Имя заказчика</label>
-                    <input type="text" id="order-name" required>
-
-                    <label>Телефон</label>
-                    <input type="tel" id="order-phone" required>
-
-                    <label>Telegram</label>
-                    <input type="text" id="order-tg">
-
-                    <label>Адрес доставки</label>
-                    <input type="text" id="order-address" required>
-
-                    <label>Дата доставки</label>
-                    <input type="date" id="order-date" required>
-
-                    <label>Интервал доставки</label>
-                    <select id="order-interval" required>
-                        <option value="">Выберите интервал</option>
-                        <option value="10-12">10:00–12:00</option>
-                        <option value="12-14">12:00–14:00</option>
-                        <option value="14-16">14:00–16:00</option>
-                        <option value="16-18">16:00–18:00</option>
-                        <option value="18-20">18:00–20:00</option>
-                        <option value="20-22">20:00–22:00</option>
-                    </select>
-
-                    <label>Комментарий к заказу</label>
-                    <textarea id="order-comment"></textarea>
-
-                    <label>Текст для открытки</label>
-                    <textarea id="order-card-text"></textarea>
-
-                    <label>
-                        <input type="checkbox" id="order-same-recipient" checked>
-                        Получатель совпадает с заказчиком
-                    </label>
-
-                    <button type="submit" class="btn-submit">Отправить заказ</button>
-                </form>
-            </div>
-        </div>
     </div>
 
     <script src="script.js"></script>
