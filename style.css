@@ -1,412 +1,205 @@
-* { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Best Moments</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
 
-body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #fff8f5;
-    color: #3a1f2c;
-    min-height: 100vh;
-}
+        <!-- HOME -->
+        <div id="home" class="screen active">
+            <div class="hero">
+                <img src="images/hero-bg.jpg" alt="Главный фон" class="hero-bg">
+                <div class="hero-overlay"></div>
+                <img src="images/logo.png" alt="Best Moments Logo" class="hero-logo">
+                <div class="hero-content">
+                    <a href="https://t.me/best_moments_msk" target="_blank" class="btn-manager">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M9.417 15.181l.397-5.768 10.324-6.04c.452-.266.851-.105.533.266l-8.583 7.983-3.671 1.559zM11.068 13.268l9.286-5.462c.431-.258.825-.118.515.247L12.347 13.6l-.279 3.115c.41-.005.588-.188.82-.41l1.238-1.2z"/>
+                        </svg>
+                        Заказать у менеджера
+                    </a>
+                </div>
+            </div>
+        </div>
 
-#app {
-    max-width: 460px;
-    margin: 0 auto;
-    padding-bottom: 100px;
-}
+        <!-- CATALOG -->
+        <div id="catalog" class="screen">
+            <div class="screen-header">Каталог</div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Цена</label>
+                    <input type="range" id="price-range" min="0" max="30000" value="30000" step="1000">
+                    <span id="price-value">до 30 000 ₽</span>
+                </div>
+                <div class="filter-group">
+                    <label>Гамма</label>
+                    <select id="gamma-filter">
+                        <option value="all">Все</option>
+                        <option value="white">Белая</option>
+                        <option value="tender">Нежная</option>
+                        <option value="bright">Яркая</option>
+                        <option value="season">Сезонная</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Тип букета</label>
+                    <select id="type-filter">
+                        <option value="all">Все</option>
+                        <option value="monobukety">Монобукеты</option>
+                        <option value="sbornye">Сборные букеты</option>
+                        <option value="kompozicii-v-korzine">Композиции в корзине</option>
+                        <option value="ekzoticheskie-ohapki">Экзотические охапки</option>
+                        <option value="banchi">Банчи</option>
+                        <option value="svadebnye">Свадебные букеты</option>
+                    </select>
+                </div>
+            </div>
+            <div class="products-grid"></div>
+        </div>
 
-.screen {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    transform: translateY(10px);
-    overflow-y: auto;
-    padding: 0 16px 120px;
-}
+        <!-- WISHLIST -->
+        <div id="wishlist" class="screen">
+            <div class="screen-header">Избранное</div>
+            <div class="products-grid wishlist-grid"></div>
+            <div class="empty empty-wishlist hidden">
+                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ffb6c1" stroke-width="1.5" fill="none">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <p>Пока ничего не добавлено</p>
+            </div>
+        </div>
 
-.screen.active {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-    position: relative;
-}
+        <!-- CART -->
+        <div id="cart" class="screen">
+            <div class="screen-header">Корзина</div>
+            <div class="products-grid cart-grid"></div>
+            <div class="cart-total hidden">
+                <div class="total-line">
+                    <span>Итого:</span>
+                    <span id="cart-sum">0 ₽</span>
+                </div>
+                <button class="btn-checkout">Оформить заказ</button>
+            </div>
+            <div class="empty empty-cart hidden">
+                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ffb6c1" stroke-width="1.5" fill="none">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <path d="M3 6h18"/>
+                    <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+                <p>Ваша корзина пуста</p>
+            </div>
+        </div>
 
-.hero {
-    height: 70vh;
-    min-height: 480px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 0 0 40px 40px;
-}
+        <!-- ABOUT -->
+        <div id="about" class="screen">
+            <div class="screen-header">О нас</div>
+            <div class="about-content">
+                <p>Самые свежие цветы с лучших плантаций мира.</p>
+                <p>Ежедневная закупка — мы привозим только то, что действительно красиво и свежо.</p>
+                <p>Эксклюзивная упаковка — брендированные ленты, наклейки, открытки.</p>
+                <p>Стильная транспортировочная коробка Best Moments — безопасная перевозка.</p>
+                <p>Персональный менеджер — остаётся с вами от выбора до получения букета.</p>
+            </div>
+        </div>
 
-.hero-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        <!-- HOW TO KEEP -->
+        <div id="how-to-keep" class="screen">
+            <div class="screen-header">Как продлить жизнь букету</div>
+            <div class="how-content">
+                <p>БУКЕТ</p>
+                <ol>
+                    <li>Освободите букет от упаковки.</li>
+                    <li>Тщательно помойте и подготовьте вазу.</li>
+                    <li>Добавьте холодную воду + подкормку из пакетика.</li>
+                    <li>Сделайте свежий срез под углом 45°.</li>
+                    <li>Поставьте букет в прохладное место без прямых лучей.</li>
+                    <li>Меняйте воду каждые 1–2 дня.</li>
+                </ol>
+                <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d26?w=800" alt="Букет в вазе">
+            </div>
+        </div>
 
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.65));
-}
+        <!-- CONTACTS -->
+        <div id="contacts" class="screen">
+            <div class="screen-header">Контакты</div>
+            <div class="contacts-content">
+                <p>Свяжитесь с нами удобным способом:</p>
+                <a href="https://t.me/best_moments_msk" target="_blank" class="contact-link">Telegram: @best_moments_msk</a>
+                <a href="https://wa.me/79160058398" target="_blank" class="contact-link">WhatsApp: +7 (916) 005-83-98</a>
+                <a href="tel:+79160058398" class="contact-link">Телефон: +7 (916) 005-83-98</a>
+                <a href="mailto:best@moments.ru" class="contact-link">Email: best@moments.ru</a>
+                <a href="https://www.instagram.com/best_moments_msk" target="_blank" class="contact-link">Instagram: @best_moments_msk</a>
+            </div>
+        </div>
 
-.hero-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 280px;
-    z-index: 3;
-}
+        <!-- PROFILE -->
+        <div id="profile" class="screen">
+            <div class="screen-header">Профиль</div>
+            <div class="profile-placeholder">
+                <p>Личный кабинет скоро появится</p>
+            </div>
+        </div>
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100%;
-    padding-bottom: 60px;
-}
+        <!-- BOTTOM NAV -->
+        <nav class="bottom-nav">
+            <button data-target="home" class="nav-btn active">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                    <path d="M9 22V12h6v10"/>
+                </svg>
+                <span>Главная</span>
+            </button>
 
-.btn-manager {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 36px;
-    background: #ff6b81;
-    color: white;
-    border-radius: 32px;
-    font-size: 1.15rem;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
+            <button data-target="wishlist" class="nav-btn">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="badge wishlist-badge hidden">0</span>
+                </div>
+                <span>Избранное</span>
+            </button>
 
-.btn-manager svg {
-    fill: white;
-}
+            <button data-target="catalog" class="nav-btn">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+                <span>Каталог</span>
+            </button>
 
-.btn-manager:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.4);
-    background: #ff4d6a;
-}
+            <button data-target="cart" class="nav-btn">
+                <div class="icon-wrapper">
+                    <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                        <path d="M6 2L3 6v14c0 1.1.9 2 2 2h14a2 2 0 002-2V6l-3-4z"/>
+                        <path d="M3 6h18M16 10a4 4 0 11-8 0"/>
+                    </svg>
+                    <span class="badge cart-badge hidden">0</span>
+                </div>
+                <span>Корзина</span>
+            </button>
 
-.screen-header {
-    font-size: 2.3rem;
-    font-weight: 700;
-    color: #5c2d44;
-    padding: 28px 0 18px;
-    text-align: center;
-}
+            <button data-target="contacts" class="nav-btn">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span>Контакты</span>
+            </button>
 
-.filters {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    background: white;
-    border-radius: 24px;
-    margin: 16px 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
+            <button data-target="profile" class="nav-btn">
+                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>Профиль</span>
+            </button>
+        </nav>
+    </div>
 
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.filter-group label {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #5c2d44;
-}
-
-.filter-group input[type="range"] {
-    width: 100%;
-    accent-color: #ff6b81;
-}
-
-.filter-group select {
-    padding: 12px 16px;
-    border: 1px solid #ffebee;
-    border-radius: 20px;
-    font-size: 1rem;
-    background: white;
-    color: #3a1f2c;
-}
-
-#price-value {
-    font-size: 0.95rem;
-    color: #ff6b81;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 4px;
-}
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.product {
-    background: white;
-    border-radius: 28px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 40px rgba(255,105,180,0.3);
-}
-
-.product img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-}
-
-.product-info {
-    padding: 18px;
-}
-
-.product-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #2f1a24;
-    line-height: 1.4;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.product-price {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ff6b81;
-}
-
-.actions-row {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 14px;
-}
-
-.btn-icon {
-    background: #fff0f5;
-    border: none;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    transition: all 0.28s ease;
-}
-
-.btn-icon:hover {
-    background: #ffe4e9;
-    transform: scale(1.12);
-}
-
-.btn-icon svg {
-    width: 26px;
-    height: 26px;
-    stroke: #ff6b81;
-}
-
-.btn-icon.liked svg {
-    fill: #ff6b81;
-    stroke: #ff6b81;
-}
-
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 8px;
-}
-
-.quantity-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid #ffebee;
-    background: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.quantity-btn:hover {
-    background: #fff0f5;
-}
-
-.cart-total {
-    position: sticky;
-    bottom: 90px;
-    background: white;
-    padding: 16px;
-    border-top: 1px solid #ffebee;
-    box-shadow: 0 -4px 12px rgba(255,182,193,0.2);
-    margin: 20px -16px 0;
-}
-
-.total-line {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: #5c2d44;
-}
-
-.btn-checkout {
-    width: 100%;
-    padding: 14px;
-    background: #ff6b81;
-    color: white;
-    border: none;
-    border-radius: 24px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.28s ease;
-}
-
-.btn-checkout:hover {
-    background: #ff4d6a;
-    transform: translateY(-2px);
-}
-
-.empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    color: #d89db0;
-    text-align: center;
-}
-
-.empty svg {
-    margin-bottom: 28px;
-}
-
-.empty p {
-    font-size: 1.2rem;
-    color: #a56d84;
-}
-
-.about-content, .how-content, .contacts-content {
-    padding: 20px;
-    background: white;
-    border-radius: 24px;
-    margin-top: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
-
-.about-content p, .how-content p, .how-content ol li, .contacts-content p, .contacts-content a {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: #3a1f2c;
-    margin-bottom: 16px;
-}
-
-.contacts-content a {
-    display: block;
-    color: #ff6b81;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.contacts-content a:hover {
-    text-decoration: underline;
-}
-
-.how-content ol {
-    padding-left: 24px;
-    margin: 16px 0;
-}
-
-.how-content img {
-    width: 100%;
-    border-radius: 20px;
-    margin-top: 16px;
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 460px;
-    margin: 0 auto;
-    height: 88px;
-    background: white;
-    border-top: 1px solid #ffebee;
-    display: flex;
-    box-shadow: 0 -6px 20px rgba(255,182,193,0.25);
-}
-
-.nav-btn {
-    flex: 1;
-    height: 100%;
-    background: none;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: #a56d84;
-    transition: color 0.28s ease;
-}
-
-.nav-btn.active {
-    color: #ff6b81;
-}
-
-.nav-btn svg {
-    transition: transform 0.28s ease;
-}
-
-.nav-btn.active svg {
-    transform: scale(1.2);
-}
-
-.icon-wrapper {
-    position: relative;
-}
-
-.badge {
-    position: absolute;
-    top: -6px;
-    right: -8px;
-    background: #ff6b81;
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
-    display: grid;
-    place-items: center;
-    padding: 0 5px;
-}
-
-.hidden { display: none !important; }
+    <script src="script.js"></script>
+</body>
+</html>
