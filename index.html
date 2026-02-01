@@ -11,19 +11,13 @@
 
         <!-- TOP HEADER -->
         <header class="top-header">
-            <div class="header-left">
-                <button class="menu-btn">≡</button>
-                <span class="header-title">КАТАЛОГ</span>
-                <span class="header-title">КОНТАКТЫ</span>
-            </div>
-            <div class="header-center">
-                <img src="images/logo.png" alt="Best Moments" class="header-logo" onclick="switchScreen('home')">
-            </div>
-            <div class="header-right">
-                <button class="search-btn">Q</button>
-                <button class="wishlist-btn">♥</button>
-                <button class="profile-btn">@</button>
-            </div>
+            <button class="menu-btn">≡</button>
+            <span class="header-title">КАТАЛОГ</span>
+            <span class="header-title">КОНТАКТЫ</span>
+            <img src="images/logo.png" alt="Best Moments" class="header-logo" onclick="switchScreen('home')">
+            <button class="search-btn">Q</button>
+            <button class="wishlist-btn">♥</button>
+            <button class="profile-btn">@</button>
         </header>
 
         <!-- HOME -->
@@ -45,40 +39,20 @@
             </div>
         </div>
 
-        <!-- CATALOG (пока заглушка, дальше доработаем боковую панель) -->
+        <!-- CATALOG (пока заглушка) -->
         <div id="catalog" class="screen">
             <div class="screen-header">Каталог</div>
-            <div class="filters">
-                <div class="filter-group">
-                    <label>Цена</label>
-                    <input type="range" id="price-range" min="0" max="30000" value="30000" step="1000">
-                    <span id="price-value">до 30 000 ₽</span>
-                </div>
-                <div class="filter-group">
-                    <label>Гамма</label>
-                    <select id="gamma-filter">
-                        <option value="all">Все</option>
-                        <option value="white">Белая</option>
-                        <option value="tender">Нежная</option>
-                        <option value="bright">Яркая</option>
-                        <option value="season">Сезонная</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label>Тип букета</label>
-                    <select id="type-filter">
-                        <option value="all">Все</option>
-                        <option value="monobukety">Монобукеты</option>
-                        <option value="sbornye">Сборные букеты</option>
-                        <option value="kompozicii-v-korzine">Композиции в корзине</option>
-                        <option value="ekzoticheskie-ohapki">Экзотические охапки</option>
-                        <option value="banchi">Банчи</option>
-                        <option value="svadebnye">Свадебные букеты</option>
-                    </select>
-                </div>
-            </div>
             <div class="products-grid"></div>
         </div>
+
+        <!-- остальные экраны: WISHLIST, CART, ABOUT, HOW-TO-KEEP, CONTACTS, PROFILE -->
+        <!-- вставь их из предыдущей версии, если нужно -->
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
         <!-- WISHLIST -->
         <div id="wishlist" class="screen">
@@ -169,4 +143,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
