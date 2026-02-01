@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Best Moments</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preload" href="Fonts/Hero.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <body>
     <div id="app">
@@ -17,9 +16,6 @@
                 <div class="hero-overlay"></div>
                 <img src="images/logo.png" alt="Best Moments Logo" class="hero-logo">
                 <div class="hero-content">
-                    <a href="https://t.me/best_moments_msk" target="_blank" class="btn-manager">
-                        Заказать у менеджера
-                    </a>
                     <div class="quick-buttons">
                         <button class="quick-btn" onclick="switchScreen('catalog')">Перейти в каталог</button>
                         <button class="quick-btn" onclick="switchScreen('quick-order')">Быстрый выбор букета</button>
@@ -64,7 +60,7 @@
             <div class="products-grid"></div>
         </div>
 
-        <!-- QUICK ORDER (новый экран для "Быстрый выбор букета") -->
+        <!-- QUICK ORDER -->
         <div id="quick-order" class="screen">
             <div class="screen-header">Быстрый выбор букета</div>
             <div class="quick-order-form">
@@ -176,7 +172,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV (оставлена как была в твоём коде) -->
+        <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
             <button data-target="home" class="nav-btn active">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
