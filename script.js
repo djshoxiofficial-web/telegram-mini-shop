@@ -229,12 +229,6 @@ function updateCartItem(id, delta) {
     if (document.getElementById('cart').classList.contains('active')) renderCart();
 }
 
-// Быстрый выбор букета - обновление цены
-function updateQuickPrice() {
-    const price = document.getElementById('quick-price').value;
-    document.getElementById('quick-price-val').textContent = price.toLocaleString() + ' ₽';
-}
-
 // Обработчик кликов
 document.addEventListener('click', e => {
     const btn = e.target.closest('.nav-btn');
@@ -284,10 +278,9 @@ document.addEventListener('click', e => {
     }
 });
 
-// события фильтров и быстрого заказа
+// события фильтров
 document.addEventListener('input', e => {
     if (e.target.id === 'price-range') applyFilters();
-    if (e.target.id === 'quick-price') updateQuickPrice();
 });
 
 document.addEventListener('change', e => {
@@ -299,5 +292,4 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts();
     updateBadges();
     switchScreen('home');
-    updateQuickPrice();
 });
