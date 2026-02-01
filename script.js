@@ -42,6 +42,8 @@ function switchScreen(target) {
 // Рендер категорий
 function renderCategories() {
     const cont = document.querySelector('.categories');
+    if (!cont) return;  // если элемента нет — просто выходим, без ошибки
+
     cont.innerHTML = '';
     categories.forEach((cat, i) => {
         const el = document.createElement('div');
@@ -293,3 +295,4 @@ document.addEventListener('DOMContentLoaded', () => {
     updateBadges();
     switchScreen('home');
 });
+
