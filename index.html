@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Best Moments</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preload" href="Fonts/Hero.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <body>
     <div id="app">
@@ -17,11 +18,13 @@
                 <img src="images/logo.png" alt="Best Moments Logo" class="hero-logo">
                 <div class="hero-content">
                     <a href="https://t.me/best_moments_msk" target="_blank" class="btn-manager">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                            <path d="M9.417 15.181l.397-5.768 10.324-6.04c.452-.266.851-.105.533.266l-8.583 7.983-3.671 1.559zM11.068 13.268l9.286-5.462c.431-.258.825-.118.515.247L12.347 13.6l-.279 3.115c.41-.005.588-.188.82-.41l1.238-1.2z"/>
-                        </svg>
                         Заказать у менеджера
                     </a>
+                    <div class="quick-buttons">
+                        <button class="quick-btn" onclick="switchScreen('catalog')">Перейти в каталог</button>
+                        <button class="quick-btn" onclick="switchScreen('quick-order')">Быстрый выбор букета</button>
+                        <button class="quick-btn" onclick="window.open('https://t.me/best_moments_msk', '_blank')">Заказать у менеджера</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -59,6 +62,35 @@
                 </div>
             </div>
             <div class="products-grid"></div>
+        </div>
+
+        <!-- QUICK ORDER (новый экран для "Быстрый выбор букета") -->
+        <div id="quick-order" class="screen">
+            <div class="screen-header">Быстрый выбор букета</div>
+            <div class="quick-order-form">
+                <div class="form-group">
+                    <label>Цена (итоговая)</label>
+                    <input type="range" id="quick-price" min="4000" max="100000" value="4000" step="1000">
+                    <span id="quick-price-val">4 000 ₽</span>
+                </div>
+                <div class="form-group">
+                    <label>Гамма</label>
+                    <div class="checkbox-list">
+                        <label><input type="checkbox" name="gamma" value="white"> Белая</label>
+                        <label><input type="checkbox" name="gamma" value="tender"> Нежная</label>
+                        <label><input type="checkbox" name="gamma" value="bright"> Яркая</label>
+                        <label><input type="checkbox" name="gamma" value="season"> Сезонная</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Тип букета</label>
+                    <div class="checkbox-list">
+                        <label><input type="checkbox" name="type" value="sbornye"> Сборный букет</label>
+                        <label><input type="checkbox" name="type" value="kompozicii-v-korzine"> Композиция в корзине</label>
+                    </div>
+                </div>
+                <button class="quick-submit">Перейти к оплате и данным</button>
+            </div>
         </div>
 
         <!-- WISHLIST -->
@@ -144,7 +176,7 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV -->
+        <!-- BOTTOM NAV (оставлена как была в твоём коде) -->
         <nav class="bottom-nav">
             <button data-target="home" class="nav-btn active">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
