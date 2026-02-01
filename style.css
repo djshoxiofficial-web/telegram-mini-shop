@@ -84,11 +84,11 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 28px; /* чуть меньше размер */
+    padding: 12px 28px;
     background: #ff6b81;
     color: white;
     border-radius: 32px;
-    font-size: 1rem; /* чуть меньше шрифт */
+    font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
     box-shadow: 0 6px 16px rgba(0,0,0,0.3);
@@ -105,12 +105,12 @@ body {
 }
 
 .quick-btn {
-    padding: 12px 28px; /* чуть меньше размер */
+    padding: 12px 28px;
     background: rgba(255,107,129,0.9);
     color: white;
     border: none;
     border-radius: 32px;
-    font-size: 0.95rem; /* чуть меньше шрифт */
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
