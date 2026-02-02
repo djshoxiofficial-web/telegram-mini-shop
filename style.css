@@ -64,12 +64,11 @@ body {
 }
 
 .hero-logo {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 280px;
+    position: relative;
     z-index: 3;
+    max-width: 280px;
+    margin: 0 auto;
+    display: block;
 }
 
 .hero-content {
@@ -409,4 +408,5 @@ body {
 }
 
 .hidden { display: none !important; }
+
 
