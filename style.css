@@ -7,6 +7,16 @@ body {
     min-height: 100vh;
 }
 
+@font-face {
+    font-family: 'Hero';
+    src: url('fonts/Hero.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    font-family: 'Hero', system-ui, sans-serif;
+}
+
 #app {
     max-width: 460px;
     margin: 0 auto;
@@ -399,3 +409,4 @@ body {
 }
 
 .hidden { display: none !important; }
+
