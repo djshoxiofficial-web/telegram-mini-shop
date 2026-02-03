@@ -34,7 +34,7 @@ function switchScreen(target) {
     navButtons.forEach(b => b.classList.remove('active'));
     document.querySelector(`[data-target="${target}"]`).classList.add('active');
 
-    if (target === 'catalog') renderProducts();
+    if (target === 'catalog-products') renderProducts();
     if (target === 'wishlist') renderWishlist();
     if (target === 'cart') renderCart();
 }
@@ -42,7 +42,7 @@ function switchScreen(target) {
 // Рендер категорий
 function renderCategories() {
     const cont = document.querySelector('.categories');
-    if (!cont) return; // фикс ошибки null
+    if (!cont) return;
 
     cont.innerHTML = '';
     categories.forEach((cat, i) => {
@@ -72,7 +72,7 @@ function applyFilters() {
 
 // Рендер товаров
 function renderProducts(catId = 'all', priceMax = 30000, gamma = 'all', type = 'all') {
-    const cont = document.querySelector('#catalog .products-grid');
+    const cont = document.querySelector('#catalog-products .products-grid');
     cont.innerHTML = '';
 
     let filtered = products;
