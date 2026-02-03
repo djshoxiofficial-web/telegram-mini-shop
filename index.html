@@ -17,7 +17,7 @@
                 <img src="images/logo.png" alt="Best Moments Logo" class="hero-logo">
                 <div class="hero-content">
                     <div class="quick-buttons">
-                        <button class="quick-btn" onclick="switchScreen('catalog')">Перейти в каталог</button>
+                        <button class="quick-btn" onclick="switchScreen('catalog-products')">Перейти в каталог</button>
                         <button class="quick-btn" onclick="switchScreen('quick-order')">Быстрый выбор букета</button>
                         <button class="quick-btn" onclick="window.open('https://t.me/best_moments_msk', '_blank')">Заказать у менеджера</button>
                     </div>
@@ -25,9 +25,9 @@
             </div>
         </div>
 
-        <!-- CATALOG -->
-        <div id="catalog" class="screen">
-            <div class="screen-header">Каталог</div>
+        <!-- КАТАЛОГ ТОВАРОВ (6 видов букетов) -->
+        <div id="catalog-products" class="screen">
+            <div class="screen-header">Каталог букетов</div>
             <div class="filters">
                 <div class="filter-group">
                     <label>Цена</label>
@@ -60,117 +60,23 @@
             <div class="products-grid"></div>
         </div>
 
-        <!-- QUICK ORDER -->
-        <div id="quick-order" class="screen">
-            <div class="screen-header">Быстрый выбор букета</div>
-            <div class="quick-order-form">
-                <div class="form-group">
-                    <label>Цена (итоговая)</label>
-                    <input type="range" id="quick-price" min="4000" max="100000" value="4000" step="1000">
-                    <span id="quick-price-val">4 000 ₽</span>
-                </div>
-                <div class="form-group">
-                    <label>Гамма</label>
-                    <div class="checkbox-list">
-                        <label><input type="checkbox" name="gamma" value="white"> Белая</label>
-                        <label><input type="checkbox" name="gamma" value="tender"> Нежная</label>
-                        <label><input type="checkbox" name="gamma" value="bright"> Яркая</label>
-                        <label><input type="checkbox" name="gamma" value="season"> Сезонная</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Тип букета</label>
-                    <div class="checkbox-list">
-                        <label><input type="checkbox" name="type" value="sbornye"> Сборный букет</label>
-                        <label><input type="checkbox" name="type" value="kompozicii-v-korzine"> Композиция в корзине</label>
-                    </div>
-                </div>
-                <button class="quick-submit">Перейти к оплате и данным</button>
+        <!-- МЕНЮ КАТАЛОГА (О нас, Подписка, Копилка и т.д.) -->
+        <div id="catalog-menu" class="screen">
+            <div class="screen-header">Каталог</div>
+            <div class="menu-list">
+                <button class="menu-item" onclick="switchScreen('about')">О нас</button>
+                <button class="menu-item" onclick="switchScreen('catalog-products')">Каталог</button>
+                <button class="menu-item">Цветочная подписка</button>
+                <button class="menu-item">Цветочная копилка</button>
+                <button class="menu-item">Корпоративным клиентам</button>
+                <button class="menu-item">Оформление мероприятий</button>
+                <button class="menu-item">Доставка</button>
+                <button class="menu-item" onclick="switchScreen('contacts')">Контакты</button>
             </div>
         </div>
 
-        <!-- WISHLIST -->
-        <div id="wishlist" class="screen">
-            <div class="screen-header">Избранное</div>
-            <div class="products-grid wishlist-grid"></div>
-            <div class="empty empty-wishlist hidden">
-                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ffb6c1" stroke-width="1.5" fill="none">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                <p>Пока ничего не добавлено</p>
-            </div>
-        </div>
-
-        <!-- CART -->
-        <div id="cart" class="screen">
-            <div class="screen-header">Корзина</div>
-            <div class="products-grid cart-grid"></div>
-            <div class="cart-total hidden">
-                <div class="total-line">
-                    <span>Итого:</span>
-                    <span id="cart-sum">0 ₽</span>
-                </div>
-                <button class="btn-checkout">Оформить заказ</button>
-            </div>
-            <div class="empty empty-cart hidden">
-                <svg viewBox="0 0 24 24" width="88" height="88" stroke="#ffb6c1" stroke-width="1.5" fill="none">
-                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-                    <path d="M3 6h18"/>
-                    <path d="M16 10a4 4 0 01-8 0"/>
-                </svg>
-                <p>Ваша корзина пуста</p>
-            </div>
-        </div>
-
-        <!-- ABOUT -->
-        <div id="about" class="screen">
-            <div class="screen-header">О нас</div>
-            <div class="about-content">
-                <p>Самые свежие цветы с лучших плантаций мира.</p>
-                <p>Ежедневная закупка — мы привозим только то, что действительно красиво и свежо.</p>
-                <p>Эксклюзивная упаковка — брендированные ленты, наклейки, открытки.</p>
-                <p>Стильная транспортировочная коробка Best Moments — безопасная перевозка.</p>
-                <p>Персональный менеджер — остаётся с вами от выбора до получения букета.</p>
-            </div>
-        </div>
-
-        <!-- HOW TO KEEP -->
-        <div id="how-to-keep" class="screen">
-            <div class="screen-header">Как продлить жизнь букету</div>
-            <div class="how-content">
-                <p>БУКЕТ</p>
-                <ol>
-                    <li>Освободите букет от упаковки.</li>
-                    <li>Тщательно помойте и подготовьте вазу.</li>
-                    <li>Добавьте холодную воду + подкормку из пакетика.</li>
-                    <li>Сделайте свежий срез под углом 45°.</li>
-                    <li>Поставьте букет в прохладное место без прямых лучей.</li>
-                    <li>Меняйте воду каждые 1–2 дня.</li>
-                </ol>
-                <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d26?w=800" alt="Букет в вазе">
-            </div>
-        </div>
-
-        <!-- CONTACTS -->
-        <div id="contacts" class="screen">
-            <div class="screen-header">Контакты</div>
-            <div class="contacts-content">
-                <p>Свяжитесь с нами удобным способом:</p>
-                <a href="https://t.me/best_moments_msk" target="_blank" class="contact-link">Telegram: @best_moments_msk</a>
-                <a href="https://wa.me/79160058398" target="_blank" class="contact-link">WhatsApp: +7 (916) 005-83-98</a>
-                <a href="tel:+79160058398" class="contact-link">Телефон: +7 (916) 005-83-98</a>
-                <a href="mailto:best@moments.ru" class="contact-link">Email: best@moments.ru</a>
-                <a href="https://www.instagram.com/best_moments_msk" target="_blank" class="contact-link">Instagram: @best_moments_msk</a>
-            </div>
-        </div>
-
-        <!-- PROFILE -->
-        <div id="profile" class="screen">
-            <div class="screen-header">Профиль</div>
-            <div class="profile-placeholder">
-                <p>Личный кабинет скоро появится</p>
-            </div>
-        </div>
+        <!-- остальные экраны (quick-order, wishlist, cart, about, how-to-keep, contacts, profile) -->
+        <!-- вставь их из предыдущей версии -->
 
         <!-- BOTTOM NAV -->
         <nav class="bottom-nav">
@@ -192,7 +98,7 @@
                 <span>Избранное</span>
             </button>
 
-            <button data-target="catalog" class="nav-btn">
+            <button data-target="catalog-menu" class="nav-btn">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                     <path d="M3 12h18M3 6h18M3 18h18"/>
                 </svg>
