@@ -17,7 +17,7 @@
                 <img src="images/logo.png" alt="Best Moments Logo" class="hero-logo">
                 <div class="hero-content">
                     <div class="quick-buttons">
-                        <button class="quick-btn" onclick="switchScreen('catalog')">Перейти в каталог</button>
+                        <button class="quick-btn" onclick="switchScreen('catalog-products')">Перейти в каталог</button>
                         <button class="quick-btn" onclick="switchScreen('quick-order')">Быстрый выбор букета</button>
                         <button class="quick-btn" onclick="window.open('https://t.me/best_moments_msk', '_blank')">Заказать у менеджера</button>
                     </div>
@@ -25,9 +25,10 @@
             </div>
         </div>
 
-        <!-- CATALOG -->
-        <div id="catalog" class="screen">
+        <!-- CATALOG PRODUCTS (Категории товаров) -->
+        <div id="catalog-products" class="screen">
             <div class="screen-header">Каталог</div>
+            <div class="categories"></div>
             <div class="filters">
                 <div class="filter-group">
                     <label>Цена</label>
@@ -58,6 +59,21 @@
                 </div>
             </div>
             <div class="products-grid"></div>
+        </div>
+
+        <!-- CATALOG MENU (Страница с разделами) -->
+        <div id="catalog-menu" class="screen">
+            <div class="screen-header">Каталог</div>
+            <div class="menu-list">
+                <button class="menu-item" onclick="switchScreen('about')">О нас</button>
+                <button class="menu-item" onclick="switchScreen('catalog-products')">Каталог</button>
+                <button class="menu-item">Цветочная подписка</button>
+                <button class="menu-item">Цветочная копилка</button>
+                <button class="menu-item">Корпоративным клиентам</button>
+                <button class="menu-item">Оформление мероприятий</button>
+                <button class="menu-item">Доставка</button>
+                <button class="menu-item" onclick="switchScreen('contacts')">Контакты</button>
+            </div>
         </div>
 
         <!-- QUICK ORDER -->
@@ -192,7 +208,7 @@
                 <span>Избранное</span>
             </button>
 
-            <button data-target="catalog" class="nav-btn">
+            <button data-target="catalog-menu" class="nav-btn">
                 <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
                     <path d="M3 12h18M3 6h18M3 18h18"/>
                 </svg>
